@@ -1,4 +1,4 @@
-# 07 — Sales strategy: Tally
+# 07 — Sales strategy: Shiftledger
 
 ## Motion
 
@@ -65,8 +65,8 @@ These rates appear in the Outcome Pricing Table on the landing and must be kept 
 
 **Sales-led (Enterprise):**
 1. Buyer fills the contact link in the footer (next wave) or replies to a comparison-content email.
-2. Tally founder runs a 30-minute call: data flow, sub-processors, verification rules, pool size.
-3. Tally sends a NOWPayments invoice for the deposit + a one-page contract amendment for white-label/partner terms (if applicable).
+2. Shiftledger founder runs a 30-minute call: data flow, sub-processors, verification rules, pool size.
+3. Shiftledger sends a NOWPayments invoice for the deposit + a one-page contract amendment for white-label/partner terms (if applicable).
 4. Pool seeded; first cleared receipts within 7 business days.
 
 ## Key metrics (sales)

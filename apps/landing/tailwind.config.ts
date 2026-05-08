@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 /**
- * [TALLY_TAILWIND] Locked tokens for the Tally landing.
+ * [SHIFTLEDGER_TAILWIND] Locked tokens for the Shiftledger landing.
  * Mirrors /DESIGN.md sections 4-6. Source of truth lives in DESIGN.md.
  */
 const config: Config = {

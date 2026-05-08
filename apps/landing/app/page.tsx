@@ -8,7 +8,7 @@ import { VerificationTrust } from "@/components/VerificationTrust";
 import { WorkerCatalog } from "@/components/WorkerCatalog";
 
 /**
- * [TALLY_LANDING] Single-page editorial layout.
+ * [SHIFTLEDGER_LANDING] Single-page editorial layout.
  * Section order locked in /DESIGN.md section 9. Real copy lives in
  * /docs/08-marketing-strategy.md "Copy specimen". Anything edited here
  * must be mirrored in DESIGN.md section 9 + the marketing doc.

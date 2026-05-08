@@ -1,10 +1,10 @@
-# 10 — Pitch deck: Tally
+# 10 — Pitch deck: Shiftledger
 
 A 10-slide deck. Each slide is a single H1 (the slide title) followed by 3-5 bullets. Designed to render as a flat document and as a self-contained slide deck (`pitch-deck.html`).
 
 ---
 
-# Slide 1 — Tally
+# Slide 1 — Shiftledger
 
 - **Outcome ledger for AI workers.**
 - *You only pay when the shift ships.*
@@ -54,12 +54,12 @@ A 10-slide deck. Each slide is a single H1 (the slide title) followed by 3-5 bul
 
 # Slide 6 — The receipt
 
-- *Tally — Customer Support shift*
+- *Shiftledger — Customer Support shift*
 - Shift dates: 2026-05-04 / 2026-05-08
 - Resolved tickets: **312 / 350**.
 - Voided lines: **38** (verification rule failed).
 - **Total charged: $1,872.00.**
-- AUDIT-STAMP: PAID — TALLY — OUTCOMES VERIFIED — 2026-05-08.
+- AUDIT-STAMP: PAID — SHIFTLEDGER — OUTCOMES VERIFIED — 2026-05-08.
 
 ---
 
@@ -73,7 +73,7 @@ A 10-slide deck. Each slide is a single H1 (the slide title) followed by 3-5 bul
 
 ---
 
-# Slide 8 — Why Tally wins
+# Slide 8 — Why Shiftledger wins
 
 - The unit price is the contract — buyers sign once, not every quarter.
 - Verification is built-in — voided lines are voided, no chain-of-thought theatre.

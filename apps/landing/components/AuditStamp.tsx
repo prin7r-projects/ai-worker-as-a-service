@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 
 /**
- * [TALLY_AUDIT_STAMP] The "PAID — OUTCOMES VERIFIED" circular stamp glyph.
+ * [SHIFTLEDGER_AUDIT_STAMP] The "PAID — OUTCOMES VERIFIED" circular stamp glyph.
  * Used in the hero receipt and anywhere a tier card needs the receipt seal.
  */
 type Props = {
@@ -15,12 +15,12 @@ export function AuditStamp({ className, date = "2026-05-08", size = 120 }: Props
     <svg
       viewBox="0 0 120 120"
       role="img"
-      aria-label="Tally Paid stamp"
+      aria-label="Shiftledger Paid stamp"
       width={size}
       height={size}
       className={cn("inline-block", className)}
     >
-      <title>Tally Paid — Outcomes Verified</title>
+      <title>Shiftledger Paid — Outcomes Verified</title>
       <g transform="rotate(-7 60 60)">
         <circle cx="60" cy="60" r="56" fill="none" stroke="#1F4F8A" strokeWidth="1.6" />
         <circle cx="60" cy="60" r="46" fill="none" stroke="#1F4F8A" strokeWidth="0.8" />

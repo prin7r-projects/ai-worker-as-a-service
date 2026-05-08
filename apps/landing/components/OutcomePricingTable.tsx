@@ -1,7 +1,7 @@
 import { WORKERS } from "@/lib/workers";
 
 /**
- * [TALLY_PRICING_TABLE] Literal price table per worker profile.
+ * [SHIFTLEDGER_PRICING_TABLE] Literal price table per worker profile.
  * Two columns: "What we'll deliver" (the unit) / "What you'll pay" (per-cleared-outcome USD).
  * Hairline rules per row, mono numerics, right-aligned amounts.
  */
@@ -22,7 +22,7 @@ export function OutcomePricingTable() {
 
       <div className="border border-ink overflow-hidden">
         <table className="w-full text-left font-mono">
-          <caption className="sr-only">Tally per-outcome unit prices by worker profile.</caption>
+          <caption className="sr-only">Shiftledger per-outcome unit prices by worker profile.</caption>
           <thead>
             <tr className="bg-ink text-paper">
               <th scope="col" className="py-4 px-5 label-mono text-paper/80 font-medium text-left w-[28%]">

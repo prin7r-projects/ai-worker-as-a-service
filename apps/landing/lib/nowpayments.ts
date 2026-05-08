@@ -1,7 +1,7 @@
 /**
- * [TALLY_NOWPAYMENTS] Server-side helpers for the NOWPayments hosted invoice.
+ * [SHIFTLEDGER_NOWPAYMENTS] Server-side helpers for the NOWPayments hosted invoice.
  *
- * Tally maps three landing tiers to deposits paid into a buyer's outcome pool:
+ * Shiftledger maps three landing tiers to deposits paid into a buyer's outcome pool:
  *  - "trial"      — $199, capped, 25 outcome receipts
  *  - "standard"   — $999/month, 200 receipts refillable
  *  - "enterprise" — $5,000 starting deposit, custom pool
@@ -29,26 +29,26 @@ export type Plan = {
 export const PLANS: Record<PlanId, Plan> = {
   trial: {
     id: "trial",
-    name: "Tally — Trial pool deposit",
+    name: "Shiftledger — Trial pool deposit",
     depositUsd: 199,
     description:
-      "Tally Trial — $199 capped pool. Up to 25 outcome receipts in any one worker profile. One channel. No SLA. Refund of unused balance on cancellation, minus a 4% NOWPayments settlement fee.",
+      "Shiftledger Trial — $199 capped pool. Up to 25 outcome receipts in any one worker profile. One channel. No SLA. Refund of unused balance on cancellation, minus a 4% NOWPayments settlement fee.",
     pitch: "First shift on us, up to $199. One worker profile, one channel."
   },
   standard: {
     id: "standard",
-    name: "Tally — Standard pool deposit",
+    name: "Shiftledger — Standard pool deposit",
     depositUsd: 999,
     description:
-      "Tally Standard — $999 monthly pool. 200 cleared outcome receipts refillable. 1-2 channels per profile. 8-hour exception response. NOWPayments USDT/USDC settlement; refund at the contracted unit rate, minus 4% settlement fee.",
+      "Shiftledger Standard — $999 monthly pool. 200 cleared outcome receipts refillable. 1-2 channels per profile. 8-hour exception response. NOWPayments USDT/USDC settlement; refund at the contracted unit rate, minus 4% settlement fee.",
     pitch: "200 cleared receipts a month. Refillable. The default tier."
   },
   enterprise: {
     id: "enterprise",
-    name: "Tally — Enterprise pool deposit (starter $5,000)",
+    name: "Shiftledger — Enterprise pool deposit (starter $5,000)",
     depositUsd: 5000,
     description:
-      "Tally Enterprise starter deposit — $5,000. Multiple worker profiles concurrent, partner / white-label receipts available, dedicated CSM, named verification rules. Annual purchase orders welcome (custom pool sizing thereafter).",
+      "Shiftledger Enterprise starter deposit — $5,000. Multiple worker profiles concurrent, partner / white-label receipts available, dedicated CSM, named verification rules. Annual purchase orders welcome (custom pool sizing thereafter).",
     pitch: "Custom pool, multiple profiles, white-label, dedicated CSM."
   }
 };
@@ -79,7 +79,7 @@ export async function createNowpaymentsInvoice(input: CreateInvoiceInput): Promi
   const sandbox = (optionalEnv("NOWPAYMENTS_SANDBOX") ?? "false").toLowerCase() === "true";
   const apiBase = sandbox ? "https://api-sandbox.nowpayments.io" : "https://api.nowpayments.io";
 
-  const orderId = `tally_${input.plan.id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const orderId = `shiftledger_${input.plan.id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
   const body = {
     price_amount: input.plan.depositUsd,

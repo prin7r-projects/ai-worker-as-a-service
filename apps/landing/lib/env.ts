@@ -1,5 +1,5 @@
 /**
- * [TALLY_ENV] Tiny env reader used by /api/checkout/* and /api/webhooks/*.
+ * [SHIFTLEDGER_ENV] Tiny env reader used by /api/checkout/* and /api/webhooks/*.
  * Mirrors the shape in payments-prototypes/src/lib/env.ts so the surface
  * looks identical across Wave 2 builds.
  */

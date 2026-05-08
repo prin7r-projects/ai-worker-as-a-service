@@ -1,8 +1,8 @@
-# Tally — AI worker as a service (outcome-based)
+# Shiftledger — AI worker as a service (outcome-based)
 
 > The first **payroll for AI workers**. You only pay when the shift ships.
 
-Tally puts AI workers on an outcome-based payroll: you specify the deliverable (X tickets resolved, Y leads contacted, Z articles drafted), we run a pre-trained worker against your stack, and you pay **only when the receipt clears**. No hour-billing, no opaque per-token math, no minimum commit.
+Shiftledger puts AI workers on an outcome-based payroll: you specify the deliverable (X tickets resolved, Y leads contacted, Z articles drafted), we run a pre-trained worker against your stack, and you pay **only when the receipt clears**. No hour-billing, no opaque per-token math, no minimum commit.
 
 ## What's in this repo
 
@@ -34,15 +34,15 @@ To exercise the NOWPayments hosted-invoice CTA locally, copy `.env.example` to `
 
 ## Architecture in one paragraph
 
-The landing is the **front door**: a static Next.js 15 marketing site (App Router, Tailwind, no JS frameworks beyond React) deployed as a standalone container. The two server routes that matter — `POST /api/checkout/nowpayments` (creates a hosted invoice and redirects the customer to `nowpayments.io/payment/?iid=...`) and `POST /api/webhooks/nowpayments` (verifies the IPN with HMAC-SHA512 over the sorted JSON payload) — are the canonical Tally payment surface. The actual worker fleet (Tally's runtime: queue, worker profiles, outcome verification) is **not** in this repo — it ships in `apps/app/` next wave when the open-saas fork lands.
+The landing is the **front door**: a static Next.js 15 marketing site (App Router, Tailwind, no JS frameworks beyond React) deployed as a standalone container. The two server routes that matter — `POST /api/checkout/nowpayments` (creates a hosted invoice and redirects the customer to `nowpayments.io/payment/?iid=...`) and `POST /api/webhooks/nowpayments` (verifies the IPN with HMAC-SHA512 over the sorted JSON payload) — are the canonical Shiftledger payment surface. The actual worker fleet (Shiftledger's runtime: queue, worker profiles, outcome verification) is **not** in this repo — it ships in `apps/app/` next wave when the open-saas fork lands.
 
 ## Screenshots
 
 Both rendered against the production URL, committed to `/docs/screenshots/`:
 
-![Tally landing — desktop (1440x900)](./docs/screenshots/landing-desktop.png)
+![Shiftledger landing — desktop (1440x900)](./docs/screenshots/landing-desktop.png)
 
-![Tally landing — mobile (390x844)](./docs/screenshots/landing-mobile.png)
+![Shiftledger landing — mobile (390x844)](./docs/screenshots/landing-mobile.png)
 
 ## License
 

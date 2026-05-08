@@ -1,7 +1,7 @@
 import { WORKERS } from "@/lib/workers";
 
 /**
- * [TALLY_WORKER_CATALOG] Six pre-trained worker profile cards arranged
+ * [SHIFTLEDGER_WORKER_CATALOG] Six pre-trained worker profile cards arranged
  * in a zebra-striped grid (alternating paper / paper-2). Hover only
  * shifts border to audit; no transform, no shadow per DESIGN.md section 11.
  */

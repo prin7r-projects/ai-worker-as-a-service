@@ -1,6 +1,6 @@
-# Tally — apps/app/ (open-saas fork stub)
+# Shiftledger — apps/app/ (open-saas fork stub)
 
-This directory is a **stub for the Wave 2 → Wave 3 transition**. The Tally runtime (auth, workspace model, worker pool, ledger DB, billing reconciliation against NOWPayments) ships here in the next wave by forking [`wasp-lang/open-saas`](https://github.com/wasp-lang/open-saas).
+This directory is a **stub for the Wave 2 → Wave 3 transition**. The Shiftledger runtime (auth, workspace model, worker pool, ledger DB, billing reconciliation against NOWPayments) ships here in the next wave by forking [`wasp-lang/open-saas`](https://github.com/wasp-lang/open-saas).
 
 ## Why a fork
 
@@ -18,7 +18,7 @@ We do **not** want to write all of that from scratch when the moat is the worker
 
 1. `git submodule add https://github.com/wasp-lang/open-saas wasp-app` (or fork-and-clone), then strip the demo features (the AI image gen demo, the daily quote etc.).
 2. Replace the Stripe integration in `src/payment/stripe/` with a NOWPayments adapter that mirrors the patterns in `/apps/landing/lib/nowpayments.ts`. The adapter writes one settlement row per cleared shift, not per subscription tick.
-3. Add the Tally domain models:
+3. Add the Shiftledger domain models:
    - `Worker` (profile_id, name, runtime_config)
    - `Contract` (org_id, profile_id, unit_price_usd, verification_rule, pool_balance_usd)
    - `Shift` (contract_id, started_at, ended_at, attempted, cleared, voided, total_charged_usd)

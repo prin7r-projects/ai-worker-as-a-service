@@ -1,7 +1,7 @@
 import { Logo } from "./Logo";
 
 /**
- * [TALLY_FOOTER] Three-column ledger foot. Wide bottom band on paper-2.
+ * [SHIFTLEDGER_FOOTER] Three-column ledger foot. Wide bottom band on paper-2.
  * Final perforation rule above the copyright line.
  */
 export function Footer() {
@@ -12,7 +12,7 @@ export function Footer() {
           <div className="md:col-span-5">
             <Logo className="h-12" />
             <p className="text-[15px] text-ink-2 max-w-md mt-5 leading-snug">
-              Tally is an outcome-billed AI worker service from{" "}
+              Shiftledger is an outcome-billed AI worker service from{" "}
               <a href="https://www.notion.so/Prin7r-3543ceec261980bca5bed579315828fb" className="text-audit hover:underline">
                 Prin7r
               </a>
@@ -25,7 +25,7 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <p className="label-mono mb-4">Tally</p>
+            <p className="label-mono mb-4">Shiftledger</p>
             <ul className="space-y-2 text-[14px] text-ink">
               <li><a href="#workers" className="hover:text-audit">Worker profiles</a></li>
               <li><a href="#verification" className="hover:text-audit">Verification</a></li>
@@ -78,7 +78,7 @@ export function Footer() {
         <hr className="perf my-10" aria-hidden="true" />
 
         <div className="flex flex-col md:flex-row justify-between gap-4 font-mono text-[11px] text-ink-2 tracking-ledger uppercase">
-          <p>&copy; 2026 Prin7r / Tally &middot; MIT licensed</p>
+          <p>&copy; 2026 Prin7r / Shiftledger &middot; MIT licensed</p>
           <p>Wave 2 build / receipt printer 1.0</p>
           <p>Settled USDT / USDC &middot; USD-denominated invoices</p>
         </div>

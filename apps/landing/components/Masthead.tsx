@@ -1,7 +1,7 @@
 import { Logo } from "./Logo";
 
 /**
- * [TALLY_MASTHEAD] Top-of-page masthead. Logo + tagline + a single CTA-like
+ * [SHIFTLEDGER_MASTHEAD] Top-of-page masthead. Logo + tagline + a single CTA-like
  * navigation link to the pricing tiers. Sits on a hairline-bottom border.
  * No sticky behavior per /DESIGN.md section 7.
  */
@@ -9,7 +9,7 @@ export function Masthead() {
   return (
     <header className="border-b border-ink/10">
       <div className="container flex items-center justify-between py-6">
-        <a href="#hero" className="flex items-center gap-3" aria-label="Tally home">
+        <a href="#hero" className="flex items-center gap-3" aria-label="Shiftledger home">
           <Logo />
         </a>
         <div className="hidden md:flex items-center gap-8">

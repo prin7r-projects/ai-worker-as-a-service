@@ -1,4 +1,4 @@
-# 02 — Architecture: Tally
+# 02 — Architecture: Shiftledger
 
 This document describes the system as it stands today (Wave 2: marketing landing + checkout) and the runtime that ships next wave (the worker fleet behind the receipts).
 
@@ -30,7 +30,7 @@ flowchart LR
   NOWHosted -->|customer pays USDT/USDC| NOWIPN
   NOWIPN -->|x-nowpayments-sig| LWH
 
-  subgraph FUTURE[Tally runtime — apps/app/ next wave]
+  subgraph FUTURE[Shiftledger runtime — apps/app/ next wave]
     Q[Outcome queue]
     W1[Worker pool]
     V[Outcome verifier]
@@ -70,7 +70,7 @@ A `.gitkeep` and `README.md` only. The plan is to fork [`wasp-lang/open-saas`](h
 
 1. Buyer clicks **BUY** on the Standard tier.
 2. Browser fetches `POST /api/checkout/nowpayments { plan: "standard" }`.
-3. Server constructs a unique `order_id = tally_standard_<ts>_<rand>` and POSTs to `https://api.nowpayments.io/v1/invoice` with `x-api-key`.
+3. Server constructs a unique `order_id = shiftledger_standard_<ts>_<rand>` and POSTs to `https://api.nowpayments.io/v1/invoice` with `x-api-key`.
 4. NOWPayments returns `{ id, invoice_url, ... }`.
 5. Server returns `{ invoice_url, invoice_id }` to the browser.
 6. Browser navigates to `invoice_url` (`https://nowpayments.io/payment/?iid=<id>`).

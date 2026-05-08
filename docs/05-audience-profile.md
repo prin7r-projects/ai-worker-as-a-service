@@ -1,4 +1,4 @@
-# 05 — Audience profile: Tally
+# 05 — Audience profile: Shiftledger
 
 ## ICP (Ideal Customer Profile)
 
@@ -56,7 +56,7 @@ Not the buyer (the COO/VP makes the buy decision) but **a gatekeeper** at the >8
 
 ## Anti-personas (will not be served)
 
-- **The hobbyist / student / no-code maker.** Tally is for queues, not exploration. Free-tier seekers should use ChatGPT.
+- **The hobbyist / student / no-code maker.** Shiftledger is for queues, not exploration. Free-tier seekers should use ChatGPT.
 - **The "rent the model" buyer.** Wants raw API access at a discount. We are the runtime, not a token reseller.
 - **The "want a custom agent" buyer.** Expects 6 weeks of fine-tuning. We do not custom-train; pre-trained profiles are the product.
 - **The crypto-sceptical procurement gate.** Companies that disallow stablecoin invoices in a vendor PO. (We will add fiat invoicing in a later wave.)

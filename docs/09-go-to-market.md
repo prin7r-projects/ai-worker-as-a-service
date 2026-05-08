@@ -1,4 +1,4 @@
-# 09 — Go-to-market: 90-day plan for Tally
+# 09 — Go-to-market: 90-day plan for Shiftledger
 
 The plan is bias-toward-receipts: every milestone has a *cleared receipt* deliverable. Click counts and signup counts are not milestones.
 

@@ -1,4 +1,4 @@
-# [TALLY_LANDING_DOCKERFILE] Multi-stage Next.js 15 standalone build.
+# [SHIFTLEDGER_LANDING_DOCKERFILE] Multi-stage Next.js 15 standalone build.
 # 1. deps - install only production deps with frozen lockfile
 # 2. builder - run next build (output: standalone)
 # 3. runner - tiny node:22-alpine image with the standalone server.js

@@ -1,4 +1,4 @@
-# 01 — Brand identity: Tally
+# 01 — Brand identity: Shiftledger
 
 ## Brand pyramid
 
@@ -9,7 +9,7 @@
 
 ## Positioning statement
 
-For COOs and operations leaders who have queues that don't fit headcount and who have already burned a budget on hour-billed AI vendors, **Tally** is the **outcome-billed AI worker service** that delivers contracted outcomes (tickets resolved, leads contacted, articles drafted) with a per-outcome receipt — unlike Manus, Lindy, Devin, or Cognition (who bill compute) and unlike traditional AI consultancies (who bill hours), because Tally is the only AI runtime that prices the way operators procure: by the cleared line item.
+For COOs and operations leaders who have queues that don't fit headcount and who have already burned a budget on hour-billed AI vendors, **Shiftledger** is the **outcome-billed AI worker service** that delivers contracted outcomes (tickets resolved, leads contacted, articles drafted) with a per-outcome receipt — unlike Manus, Lindy, Devin, or Cognition (who bill compute) and unlike traditional AI consultancies (who bill hours), because Shiftledger is the only AI runtime that prices the way operators procure: by the cleared line item.
 
 ## Audience persona — primary
 
@@ -53,14 +53,14 @@ For COOs and operations leaders who have queues that don't fit headcount and who
 
 ## Logo concept
 
-Wordmark "**Tally**" set in Cardo italic, lowercase, rendered black on paper, with a circular **audit-stamp** glyph to the right ("PAID — TALLY — OUTCOMES VERIFIED — [DATE]"). The stamp is a separate SVG so it can rotate slightly off-axis for receipts in the hero card without looking like a logo bug. No mascot, no abbreviation mark, no isotype.
+Wordmark "**Shiftledger**" set in Cardo italic, lowercase, rendered black on paper, with a circular **audit-stamp** glyph to the right ("PAID — SHIFTLEDGER — OUTCOMES VERIFIED — [DATE]"). The stamp is a separate SVG so it can rotate slightly off-axis for receipts in the hero card without looking like a logo bug. No mascot, no abbreviation mark, no isotype.
 
 ```svg
 <!-- inline reference, see /apps/landing/components/Logo.tsx -->
-<svg viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
-  <title>Tally</title>
-  <text x="0" y="44" font-family="Cardo, Georgia, serif" font-style="italic" font-size="44" fill="#0E0E0C">tally</text>
-  <g transform="translate(150 4) rotate(-7)">
+<svg viewBox="0 0 360 60" xmlns="http://www.w3.org/2000/svg">
+  <title>Shiftledger</title>
+  <text x="0" y="44" font-family="Cardo, Georgia, serif" font-style="italic" font-size="44" fill="#0E0E0C">shiftledger</text>
+  <g transform="translate(290 4) rotate(-7)">
     <circle cx="22" cy="22" r="22" fill="none" stroke="#1F4F8A" stroke-width="1.4"/>
     <circle cx="22" cy="22" r="17" fill="none" stroke="#1F4F8A" stroke-width="1"/>
     <text x="22" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="6" fill="#1F4F8A" letter-spacing=".2">PAID</text>

@@ -1,5 +1,5 @@
 /**
- * [TALLY_NOWPAYMENTS_CHECKOUT] POST /api/checkout/nowpayments
+ * [SHIFTLEDGER_NOWPAYMENTS_CHECKOUT] POST /api/checkout/nowpayments
  *
  * Body:    { plan: "trial" | "standard" | "enterprise" }
  * Returns: { invoice_url, invoice_id, plan, deposit_usd, mode: "live" } on success.
@@ -57,13 +57,13 @@ export async function POST(request: Request) {
     if (error instanceof MissingEnvError) {
       // Brand-voice 503. Tells the operator which env var is missing, but
       // never leaks the key itself. The buyer-visible message reads as a
-      // Tally receipt-printer apology, not a generic backend error.
+      // Shiftledger receipt-printer apology, not a generic backend error.
       return NextResponse.json(
         {
           error: "missing_env",
           missing: error.envName,
           message:
-            "The receipt printer is offline. Tally's NOWPayments lane is not wired up on this deployment yet — the buyer's pool can't be opened until the operator finishes the env setup. Email desk@ai-worker-as-a-service.prin7r.com and we'll hand-issue the deposit receipt within one business day."
+            "The receipt printer is offline. Shiftledger's NOWPayments lane is not wired up on this deployment yet — the buyer's pool can't be opened until the operator finishes the env setup. Email desk@ai-worker-as-a-service.prin7r.com and we'll hand-issue the deposit receipt within one business day."
         },
         { status: 503 }
       );

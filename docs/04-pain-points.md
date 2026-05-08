@@ -1,4 +1,4 @@
-# 04 — Pain points: Tally
+# 04 — Pain points: Shiftledger
 
 Each pain is anchored to a specific failure of an existing alternative. Generic pains ("AI is hard") are excluded.
 
@@ -8,7 +8,7 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Hour-billing rewards complexity, not delivery. The consultancy's incentive is to bill more hours; the buyer's incentive is fewer outcomes per dollar. The two never align.
 
-**Tally's answer.** A unit price per *cleared outcome*. The vendor (Tally) is now financially aligned with the buyer — Tally only earns on the line items that clear.
+**Shiftledger's answer.** A unit price per *cleared outcome*. The vendor (Shiftledger) is now financially aligned with the buyer — Shiftledger only earns on the line items that clear.
 
 ## P2 — Per-token API ("compute-billed agents")
 
@@ -16,7 +16,7 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Compute-billed pricing has no economic relation to outcomes. A buggy prompt that loops 10× costs 10× without delivering anything more. The buyer carries 100% of the variance.
 
-**Tally's answer.** Outcome-priced. Tally absorbs all token / runtime variance; the buyer pays the same $X per cleared ticket regardless of how many runs Tally needed to clear it.
+**Shiftledger's answer.** Outcome-priced. Shiftledger absorbs all token / runtime variance; the buyer pays the same $X per cleared ticket regardless of how many runs Shiftledger needed to clear it.
 
 ## P3 — "AI agent" platforms with seat licenses
 
@@ -24,7 +24,7 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Seat licenses are the SaaS pricing model from 2015. They were already a poor fit for human knowledge work; for AI workers they are absurd, because there is no per-user marginal cost to licence — the platform is just collecting rent on the buyer's optimism.
 
-**Tally's answer.** No seats. There is no concept of "user count" in Tally's pricing — only outcomes ordered and outcomes cleared.
+**Shiftledger's answer.** No seats. There is no concept of "user count" in Shiftledger's pricing — only outcomes ordered and outcomes cleared.
 
 ## P4 — "Pilot" purgatory with custom-AI shops
 
@@ -32,7 +32,7 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Custom-AI vendors price their service on the difficulty of the integration, not the value of the result. There's no hard delivery contract; the pilot can extend forever because the vendor benefits from extension.
 
-**Tally's answer.** Pre-trained worker profiles (the Worker Catalog block on the landing). The buyer picks a profile, picks a unit price, and the first cleared receipt arrives within a week. No custom training, no pilot purgatory.
+**Shiftledger's answer.** Pre-trained worker profiles (the Worker Catalog block on the landing). The buyer picks a profile, picks a unit price, and the first cleared receipt arrives within a week. No custom training, no pilot purgatory.
 
 ## P5 — Verification gaps (the buyer can't tell what was done)
 
@@ -40,7 +40,7 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Most "AI agent" platforms surface the agent's *intent log* (the LLM's chain of thought) as proof of work. Intent logs are not outcomes — they are diaries of attempts. A buyer cannot audit them at line-item granularity.
 
-**Tally's answer.** A per-profile **verification rule** (documented in doc 02 §"Open architectural questions" and rendered on the landing as the Verification Trust Block). The rule is the buyer-side criterion the worker must satisfy for the line to clear (e.g. CS = customer-set resolution status; SDR = at least one personalized outbound message logged in the CRM with a reply or a non-bounce). The receipt shows cleared lines and voided lines.
+**Shiftledger's answer.** A per-profile **verification rule** (documented in doc 02 §"Open architectural questions" and rendered on the landing as the Verification Trust Block). The rule is the buyer-side criterion the worker must satisfy for the line to clear (e.g. CS = customer-set resolution status; SDR = at least one personalized outbound message logged in the CRM with a reply or a non-bounce). The receipt shows cleared lines and voided lines.
 
 ## P6 — Refund / reconciliation black box
 
@@ -48,7 +48,7 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Pre-paid retainers / SOWs do not refund automatically; the buyer must initiate a dispute, which is friction enough that they don't.
 
-**Tally's answer.** No retainer. The deposit is paid into a pool; only cleared outcomes draw down the pool. Any unused pool refunds on cancellation at the contracted unit rate. No dispute, no negotiation.
+**Shiftledger's answer.** No retainer. The deposit is paid into a pool; only cleared outcomes draw down the pool. Any unused pool refunds on cancellation at the contracted unit rate. No dispute, no negotiation.
 
 ## P7 — Vendor lock-in via custom training
 
@@ -56,10 +56,10 @@ Each pain is anchored to a specific failure of an existing alternative. Generic 
 
 **Root cause.** Custom training creates **vendor lock-in by data gravity**. The buyer rationally anchors to the incumbent even when the incumbent is underperforming.
 
-**Tally's answer.** No custom training in the worker profile. Each worker reads the buyer's source-of-truth (help desk, CRM, doc store) at run time; nothing is fine-tuned to the buyer. The buyer can swap Tally for any competitor that supports the same outcome contract.
+**Shiftledger's answer.** No custom training in the worker profile. Each worker reads the buyer's source-of-truth (help desk, CRM, doc store) at run time; nothing is fine-tuned to the buyer. The buyer can swap Shiftledger for any competitor that supports the same outcome contract.
 
 ## Anti-pattern — pains we do **not** address
 
 - *"I want to chat with my own data."* That is not an outcome; it is a UI feature. Buy a chatbot tool.
-- *"I want a lower per-token price."* That is the same pricing model with a smaller number. Tally is structurally different, not cheaper.
-- *"I want a no-code agent builder."* Tally is the runtime, not the IDE.
+- *"I want a lower per-token price."* That is the same pricing model with a smaller number. Shiftledger is structurally different, not cheaper.
+- *"I want a no-code agent builder."* Shiftledger is the runtime, not the IDE.

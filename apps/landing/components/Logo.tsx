@@ -1,19 +1,19 @@
 import { cn } from "@/lib/cn";
 
 /**
- * [TALLY_LOGO] Wordmark "tally" in Cardo italic with the audit-stamp glyph.
+ * [SHIFTLEDGER_LOGO] Wordmark "shiftledger" in Cardo italic with the audit-stamp glyph.
  * The stamp is rotated -7deg so it reads as an inked seal on a paper receipt
  * rather than a logo bug. Title element provides accessible name.
  */
 export function Logo({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 220 60"
+      viewBox="0 0 360 60"
       role="img"
-      aria-label="Tally"
+      aria-label="Shiftledger"
       className={cn("h-10 w-auto", className)}
     >
-      <title>Tally</title>
+      <title>Shiftledger</title>
       <text
         x="0"
         y="46"
@@ -23,9 +23,9 @@ export function Logo({ className }: { className?: string }) {
         fontSize="48"
         fill="#0E0E0C"
       >
-        tally
+        shiftledger
       </text>
-      <g transform="translate(150 6) rotate(-7)" aria-hidden="true">
+      <g transform="translate(290 6) rotate(-7)" aria-hidden="true">
         <circle cx="22" cy="22" r="22" fill="none" stroke="#1F4F8A" strokeWidth="1.4" />
         <circle cx="22" cy="22" r="17" fill="none" stroke="#1F4F8A" strokeWidth="0.8" />
         <text

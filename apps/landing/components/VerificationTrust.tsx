@@ -1,5 +1,5 @@
 /**
- * [TALLY_VERIFICATION_TRUST] Three numbered ledger panels:
+ * [SHIFTLEDGER_VERIFICATION_TRUST] Three numbered ledger panels:
  *   1. Worker runs against the queue
  *   2. Outcome is verified against the contract
  *   3. Receipt is issued; the line is charged
@@ -22,7 +22,7 @@ export function VerificationTrust() {
           </h2>
           <p className="text-[17px] text-ink-2 mt-5 leading-snug max-w-2xl">
             No chain-of-thought theatre, no &ldquo;agent transcripts&rdquo; for proof. Every line
-            on a Tally receipt clears against a buyer-side rule. If the rule fails, the line voids
+            on a Shiftledger receipt clears against a buyer-side rule. If the rule fails, the line voids
             on the receipt and never charges your pool.
           </p>
         </div>

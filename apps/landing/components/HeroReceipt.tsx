@@ -1,7 +1,7 @@
 import { AuditStamp } from "./AuditStamp";
 
 /**
- * [TALLY_HERO_RECEIPT] The hero. Two-column at >=768px:
+ * [SHIFTLEDGER_HERO_RECEIPT] The hero. Two-column at >=768px:
  *   Left  - editorial copy + dual CTAs ("Open a receipt" -> #tiers ; "How a shift gets paid out" -> #verification).
  *   Right - the receipt card. A literal payday-stub: top band (worker, dates),
  *           middle band (line items with check-marks and one void), perforation,
@@ -22,7 +22,7 @@ export function HeroReceipt() {
             Pay only when the <span className="italic">shift</span> ships.
           </h1>
           <p className="mt-8 max-w-2xl text-[19px] leading-snug text-ink-2">
-            Tally is the first AI worker service priced like payroll. Pick a pre-trained worker —
+            Shiftledger is the first AI worker service priced like payroll. Pick a pre-trained worker —
             <span className="text-ink"> support, SDR, research, content, ops, or QA</span> — sign a
             unit-priced outcome contract, and pay only for the cleared lines on a per-shift receipt.
           </p>
@@ -69,7 +69,7 @@ export function HeroReceipt() {
             {/* Top band */}
             <div className="border-b border-ink px-6 py-5 flex items-center justify-between">
               <div>
-                <p className="label-mono">Tally — pay stub</p>
+                <p className="label-mono">Shiftledger — pay stub</p>
                 <p className="font-display italic text-2xl text-ink leading-tight mt-1">
                   Customer Support / wk 19
                 </p>
@@ -77,7 +77,7 @@ export function HeroReceipt() {
               <p className="font-mono text-[11px] text-ink-2 tracking-ledger uppercase text-right leading-tight">
                 Receipt<br/>
                 <span className="text-ink text-[13px] tracking-normal normal-case">
-                  TLY-CS-2025-W19
+                  SHL-CS-2025-W19
                 </span>
               </p>
             </div>

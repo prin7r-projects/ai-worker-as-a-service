@@ -1,5 +1,5 @@
 /**
- * [TALLY_FAQ] Native <details>/<summary> accordion. Numbered ledger entries.
+ * [SHIFTLEDGER_FAQ] Native <details>/<summary> accordion. Numbered ledger entries.
  * No JS — uses the browser's native open/close. The chevron rotates 90deg
  * via CSS when [open] is set. See DESIGN.md section 11.
  */
@@ -55,14 +55,14 @@ const FAQ_ITEMS = [
   {
     q: "Is this an AI agent?",
     a: [
-      "It's an AI worker. The difference is what you're billed for: agents bill compute, hours, or seats; Tally bills cleared lines.",
+      "It's an AI worker. The difference is what you're billed for: agents bill compute, hours, or seats; Shiftledger bills cleared lines.",
       "Buyers who have already burned a budget on per-token agents tell us this distinction is the whole point — they want a unit price they can defend internally."
     ]
   },
   {
     q: "What if a line fails verification?",
     a: [
-      "It voids on the receipt. You don't pay for it. Tally does not auto-retry voided lines without your approval — the infinite-retry loop is one of the failure modes per-token billing rewards, and we don't replicate it.",
+      "It voids on the receipt. You don't pay for it. Shiftledger does not auto-retry voided lines without your approval — the infinite-retry loop is one of the failure modes per-token billing rewards, and we don't replicate it.",
       "You see the void on the receipt with the failed rule attached, so an exception triage takes minutes, not days."
     ]
   },
@@ -96,7 +96,7 @@ const FAQ_ITEMS = [
   {
     q: "Can my agency white-label receipts?",
     a: [
-      "Yes — Enterprise / partner program. The receipt PDF carries your agency logo instead of Tally's, and we'll give you a partner unit rate to mark up.",
+      "Yes — Enterprise / partner program. The receipt PDF carries your agency logo instead of Shiftledger's, and we'll give you a partner unit rate to mark up.",
       "Reply to desk@ai-worker-as-a-service.prin7r.com with 'partner' and we'll send the agreement template."
     ]
   }

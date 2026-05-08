@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /**
- * [TALLY_TIER_PRICING] Three deposit tiers (Trial / Standard / Enterprise),
+ * [SHIFTLEDGER_TIER_PRICING] Three deposit tiers (Trial / Standard / Enterprise),
  * each one with a "BUY" CTA that POSTs to /api/checkout/nowpayments and
  * redirects to the returned NOWPayments hosted-invoice URL.
  *
@@ -90,7 +90,7 @@ export function TierPricing() {
       }
       const fallback =
         data.message ??
-        "Tally couldn't open the receipt printer. Try again, or email desk@ai-worker-as-a-service.prin7r.com.";
+        "Shiftledger couldn't open the receipt printer. Try again, or email desk@ai-worker-as-a-service.prin7r.com.";
       setErrorBy((s) => ({ ...s, [plan]: fallback }));
     } catch {
       setErrorBy((s) => ({

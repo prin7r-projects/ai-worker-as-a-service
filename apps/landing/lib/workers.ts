@@ -1,5 +1,5 @@
 /**
- * [TALLY_WORKERS] Catalog of pre-trained worker profiles.
+ * [SHIFTLEDGER_WORKERS] Catalog of pre-trained worker profiles.
  * Source of truth for /docs/07-sales-strategy.md "Per-profile unit reference rates"
  * and the Worker Catalog + Outcome Pricing Table on the landing.
  */

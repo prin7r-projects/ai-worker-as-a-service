@@ -1,5 +1,5 @@
 /**
- * [TALLY_NOWPAYMENTS_IPN] POST /api/webhooks/nowpayments
+ * [SHIFTLEDGER_NOWPAYMENTS_IPN] POST /api/webhooks/nowpayments
  *
  * NOWPayments delivers payment status updates here. The body is JSON; the
  * `x-nowpayments-sig` header carries the HMAC-SHA512 signature over the
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
   // Stub — when apps/app/ ships, this becomes a DB write that opens
   // (or refills) the buyer's pool and stamps the receipt.
   console.log(
-    `[TALLY_NOWPAYMENTS_IPN] verified=true order_id=${orderId} status=${status} paid=${paid}`
+    `[SHIFTLEDGER_NOWPAYMENTS_IPN] verified=true order_id=${orderId} status=${status} paid=${paid}`
   );
 
   return NextResponse.json({

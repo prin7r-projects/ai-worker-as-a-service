@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.landing
-    image: tally-landing:latest
-    container_name: tally-landing
+    image: shiftledger-landing:latest
+    container_name: shiftledger-landing
     restart: unless-stopped
     expose:
       - "3000"

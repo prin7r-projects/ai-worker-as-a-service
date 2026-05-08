@@ -1,8 +1,8 @@
-# 08 — Marketing strategy: Tally
+# 08 — Marketing strategy: Shiftledger
 
 ## Positioning (one paragraph)
 
-Tally is the **outcome-billed runtime** for AI workers. Buyers choose a pre-trained worker profile, sign a unit-priced outcome contract ("$6 per cleared ticket", "$9 per personalized lead reply"), and pay only for the cleared lines on a per-shift receipt. Hour-billed AI consultancies sell hours; per-token APIs sell compute; seat-licensed "AI agents" sell login chairs. **Tally sells receipts.** Every artifact in our marketing is a receipt: the hero, the catalog, the pricing table, the trust block, the testimonials. The category we are creating is *outcome economy* — the recognition that, for AI work, the only legible price is the cleared line.
+Shiftledger is the **outcome-billed runtime** for AI workers. Buyers choose a pre-trained worker profile, sign a unit-priced outcome contract ("$6 per cleared ticket", "$9 per personalized lead reply"), and pay only for the cleared lines on a per-shift receipt. Hour-billed AI consultancies sell hours; per-token APIs sell compute; seat-licensed "AI agents" sell login chairs. **Shiftledger sells receipts.** Every artifact in our marketing is a receipt: the hero, the catalog, the pricing table, the trust block, the testimonials. The category we are creating is *outcome economy* — the recognition that, for AI work, the only legible price is the cleared line.
 
 ## Messaging hierarchy
 
@@ -57,7 +57,7 @@ A literal redacted screenshot of a real cleared receipt (with customer permissio
 
 ### Pillar 4 — *vs. the alternative*
 
-Comparison posts: "Tally vs. Manus", "Tally vs. Lindy", "Tally vs. Devin". Always honest — Tally is structurally different, and the post must say what the alternative does well too. Drives search traffic from procurement (channel D).
+Comparison posts: "Shiftledger vs. Manus", "Shiftledger vs. Lindy", "Shiftledger vs. Devin". Always honest — Shiftledger is structurally different, and the post must say what the alternative does well too. Drives search traffic from procurement (channel D).
 
 ## Content distribution map
 
@@ -80,12 +80,12 @@ Reuse from doc 01 §"Voice & tone" — quoted here so writers don't have to cont
 
 ## Copy specimen (for the landing — locked, must match `/apps/landing/`)
 
-**Masthead.** "Tally — outcome ledger for AI workers"
+**Masthead.** "Shiftledger — outcome ledger for AI workers"
 
 **Hero CTA primary.** "Open a receipt — $199 trial"
 **Hero CTA secondary.** "How a shift gets paid out"
 
-**Hero body.** "Tally is the first AI worker service priced like payroll. You pick a pre-trained worker — support, SDR, research, content, ops, or QA — sign a unit-priced outcome contract, and pay only for the cleared lines. The receipt is the contract. No retainer, no tokens, no seats."
+**Hero body.** "Shiftledger is the first AI worker service priced like payroll. You pick a pre-trained worker — support, SDR, research, content, ops, or QA — sign a unit-priced outcome contract, and pay only for the cleared lines. The receipt is the contract. No retainer, no tokens, no seats."
 
 **Worker catalog header.** "Six worker profiles. One unit price each."
 
@@ -96,7 +96,7 @@ Reuse from doc 01 §"Voice & tone" — quoted here so writers don't have to cont
 
 **FAQ headers (and answers, abbreviated — full text in `/apps/landing/components/FAQAccordion.tsx`).**
 
-1. *Is this an AI agent?* — "It's an AI worker. The difference is what you're billed for: agents bill compute; Tally bills cleared lines."
+1. *Is this an AI agent?* — "It's an AI worker. The difference is what you're billed for: agents bill compute; Shiftledger bills cleared lines."
 2. *What if a line fails verification?* — "It voids on the receipt. You don't pay for it. We don't auto-retry without your approval."
 3. *Can I cancel?* — "Yes, any time. Unused pool refunds at the contracted unit rate, minus a 4% settlement fee."
 4. *Why crypto checkout?* — "NOWPayments issues a USD-denominated invoice; settlement is USDT or USDC. Stripe / fiat invoicing ships in 2026 H2."
@@ -119,5 +119,5 @@ The full 90-day plan is in doc 09. The marketing-side milestones:
 
 - **No paid ads in Wave 2.** Maya doesn't click them; Devon doesn't either.
 - **No "thought leadership" without a receipt.** Every Tier-1 post must be anchored to a real (or representative) receipt.
-- **No marketing testimonial that doesn't include a number.** "Tally is great" is unusable; "Tally cleared 312 / 350 tickets last month at $6 / line" is the format.
+- **No marketing testimonial that doesn't include a number.** "Shiftledger is great" is unusable; "Shiftledger cleared 312 / 350 tickets last month at $6 / line" is the format.
 - **No feature-grid landing.** The receipt is the value, the receipt is the page.

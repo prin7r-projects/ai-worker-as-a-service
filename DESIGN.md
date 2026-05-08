@@ -1,6 +1,6 @@
-# DESIGN.md — Tally
+# DESIGN.md — Shiftledger
 
-> Brand: **Tally**. Project: **AI worker as a service (outcome-based)**. Wave 2.
+> Brand: **Shiftledger**. Project: **AI worker as a service (outcome-based)**. Wave 2.
 
 The brand is "**a payroll for AI workers**" — outcomes, not hours, not tokens. This document is the source of truth for visual + copy decisions on the landing. The landing implementation in `/apps/landing/` mirrors what's locked here.
 
@@ -8,7 +8,7 @@ The brand is "**a payroll for AI workers**" — outcomes, not hours, not tokens.
 
 ## 1. Product and audience
 
-**Product (one sentence).** Tally is a marketplace and runtime for outcome-billed AI workers — buyers pick a pre-trained worker profile (SDR, support, research, content, ops, QA), specify the outcome contract ("close 200 stage-1 demos at $X each", "resolve 500 tickets at $Y each"), and pay only when the receipt clears.
+**Product (one sentence).** Shiftledger is a marketplace and runtime for outcome-billed AI workers — buyers pick a pre-trained worker profile (SDR, support, research, content, ops, QA), specify the outcome contract ("close 200 stage-1 demos at $X each", "resolve 500 tickets at $Y each"), and pay only when the receipt clears.
 
 **Why now.** The hour-billed AI consultancy + the per-token API are both broken pricing models for buyers who care about results. The buyer who already burned $40K on "AI agents" is done with hourly. The buyer evaluating Manus, Lindy, Devin, Cognition is told to budget tokens. Neither matches how operators procure: by outcome.
 
@@ -20,7 +20,7 @@ The brand is "**a payroll for AI workers**" — outcomes, not hours, not tokens.
 
 ## 2. Visual positioning
 
-Tally is a **ledger / payroll-stub / receipt printer** brand, not an "AI agent" brand. The hero is a stylized payday stub — workers ran a shift, the shift is reconciled, the buyer is charged only the cleared lines. The aesthetic should evoke an **audit-grade financial instrument**, not a Slackbot.
+Shiftledger is a **ledger / payroll-stub / receipt printer** brand, not an "AI agent" brand. The hero is a stylized payday stub — workers ran a shift, the shift is reconciled, the buyer is charged only the cleared lines. The aesthetic should evoke an **audit-grade financial instrument**, not a Slackbot.
 
 **Yes:** crisp paper white, dense black ink, mono-spaced numerics, hairline rules, zebra-striped tables, ledger-margin tick marks, **a stamp / chop on the cleared receipt**, audit-blue accent, payday-green for the "paid" state.
 
@@ -106,14 +106,14 @@ All-caps labels (e.g. "PAY STUB", "OUTCOME LEDGER") use Plex Mono, 12px, trackin
 
 The landing implements eight distinct blocks; all are bespoke in `apps/landing/components/`:
 
-1. **Masthead** — logo word "Tally", tagline "Outcome ledger for AI workers", a single CTA link "Pay only when shipped". Sits on a hairline-bottom border.
+1. **Masthead** — logo word "Shiftledger", tagline "Outcome ledger for AI workers", a single CTA link "Pay only when shipped". Sits on a hairline-bottom border.
 2. **HeroReceipt** — the centerpiece. A stylized payday-stub with: top-band (worker name, shift dates), middle-band (line items: outcomes delivered with check-marks), perforation rule, bottom-band (total billed, audit stamp, receipt id). Body copy + dual CTAs to its left on desktop.
 3. **WorkerCatalog** — 6 worker profile cards (SDR, Customer Support, Researcher, Writer, Ops Coordinator, QA Auditor) on a zebra-striped grid. Each card carries a profile name, deliverable unit, default outcome rate, and "starts at $X / outcome". Hover does not animate; it merely changes the border to `audit`.
 4. **OutcomePricingTable** — a literal price table per worker type, two columns: "What we'll deliver" / "What you'll pay". Mono digits, right-aligned amounts, hairline rules per row.
 5. **VerificationTrustBlock** — three stacked panels titled "How a shift gets paid out": (1) Worker runs, (2) Outcome is verified against the contract, (3) Receipt is issued; line is charged. Each panel is a numbered ledger entry, not a card.
 6. **TierPricing** — three tiers: Trial, Standard, Enterprise. Each tier is a receipt-row with a numbered "BUY" stamp button that POSTs to `/api/checkout/nowpayments` and redirects to NOWPayments.
 7. **FAQAccordion** — 7 questions, ledger-style with mono question numbers; expand/collapse via native `<details>`.
-8. **Footer** — wide bottom-band on `paper-2` with three columns (Tally, Resources, Contact), ledger-foot copy, build sha placeholder, and a final perforation rule above the copyright line.
+8. **Footer** — wide bottom-band on `paper-2` with three columns (Shiftledger, Resources, Contact), ledger-foot copy, build sha placeholder, and a final perforation rule above the copyright line.
 
 ## 9. Landing page structure
 
@@ -135,8 +135,8 @@ Real copy lives in `/docs/08-marketing-strategy.md` (messaging hierarchy) and `/
 **No photographs.** No GPT Image 2 generations were attempted for the landing — the brand is paper-and-ink, and a photograph would compete with the receipt metaphor.
 
 The only "imagery" is **inline SVG**:
-- `Logo` — the wordmark "Tally" in Cardo italic, with a stamp/chop SVG.
-- `AuditStamp` — a circular "PAID — Tally / OUTCOMES VERIFIED / [date]" stamp drawn in SVG, used in the hero and on tier cards.
+- `Logo` — the wordmark "Shiftledger" in Cardo italic, with a stamp/chop SVG.
+- `AuditStamp` — a circular "PAID — Shiftledger / OUTCOMES VERIFIED / [date]" stamp drawn in SVG, used in the hero and on tier cards.
 - `PerforationRule` — a 1px dashed horizontal SVG used as section dividers.
 
 If a future iteration wants an illustration, the constraint is: it must look like it was drawn with a fountain pen on receipt paper. No 3D, no gradient.
@@ -157,7 +157,7 @@ No scroll-jacking, no parallax, no "fade up on scroll" choreography.
 - Keyboard: Tab order = masthead CTA → HeroReceipt primary CTA → secondary CTA → catalog cards (left to right, top to bottom) → pricing-table CTAs → tier CTAs → FAQ summaries → footer links. Focus ring is always visible.
 - Color contrast: every text/background pair meets WCAG 2.1 AA (verified above in §4).
 - Semantic HTML: `<header>`, `<main>`, `<section>` with named `aria-label`s, `<details>`/`<summary>` for FAQ, `<table>` for the pricing table, `<button>` only for actions (links use `<a>`).
-- Alt text: SVG logo has `<title>Tally</title>`; the audit stamp SVG has `<title>Tally Paid stamp</title>`. Decorative SVGs (perforation rule) have `aria-hidden="true"`.
+- Alt text: SVG logo has `<title>Shiftledger</title>`; the audit stamp SVG has `<title>Shiftledger Paid stamp</title>`. Decorative SVGs (perforation rule) have `aria-hidden="true"`.
 - Forms: there are no forms on the landing other than the BUY CTAs which are POST-via-fetch buttons. The 503 fallback is rendered as visible status text below the button when the server returns `missing_env`.
 
 ## 13. Screenshots and verification artifacts
@@ -188,3 +188,4 @@ git add docs/screenshots && git commit -m "design: refresh production screenshot
 | Date       | Author                            | Change |
 |---|---|---|
 | 2026-05-08 | Wave 2 build agent (Opus 4.7-1m) | Initial DESIGN.md. All 15 sections populated. Brand identity = "Tally / outcome ledger for AI workers". Palette + type pair locked. Landing structure locked at 8 zones. NOWPayments CTA wired to `POST /v1/invoice` with HMAC-SHA512 IPN handler. Production screenshots committed under `/docs/screenshots/`. |
+| 2026-05-08 | Wave 2 rebrand agent (Opus 4.7-1m) | Brand renamed **Tally → Shiftledger** after Wave 2 name research flagged Tally as FAIL: `tally.so` is a $2M-ARR no-code form-builder SaaS already occupying the brand in B2B SaaS. Shiftledger preserves the outcome-ledger essence — the brand copy "you only pay when the shift ships" extends naturally from the new name. Search-and-replace across landing copy, docs, logo wordmark, og:title, metadata, package.json, docker-compose, debug tags, and the NOWPayments order_id prefix. Logo SVG viewBox widened (220 → 360) and stamp position shifted (translate 150 → 290) to fit the longer wordmark. Domain `shiftledger.com` registered (Moniker, 2019) with no live A-record and no SERP collision. Repo slug, live URL, and NOWPayments tier amounts unchanged. |

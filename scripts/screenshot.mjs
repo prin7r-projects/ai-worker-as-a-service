@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * [TALLY_SCREENSHOT] Capture desktop + mobile screenshots from the live URL.
+ * [SHIFTLEDGER_SCREENSHOT] Capture desktop + mobile screenshots from the live URL.
  *
  * Usage:
  *   node scripts/screenshot.mjs
@@ -21,7 +21,7 @@ const OUT_MOBILE = resolve(ROOT, "docs/screenshots/landing-mobile.png");
 mkdirSync(dirname(OUT_DESKTOP), { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
-console.log(`[TALLY_SCREENSHOT] target=${TARGET}`);
+console.log(`[SHIFTLEDGER_SCREENSHOT] target=${TARGET}`);
 
 // Desktop 1440x900 full-page
 {
@@ -34,7 +34,7 @@ console.log(`[TALLY_SCREENSHOT] target=${TARGET}`);
   });
   await page.waitForTimeout(800);
   await page.screenshot({ path: OUT_DESKTOP, fullPage: true });
-  console.log(`[TALLY_SCREENSHOT] wrote ${OUT_DESKTOP}`);
+  console.log(`[SHIFTLEDGER_SCREENSHOT] wrote ${OUT_DESKTOP}`);
   await ctx.close();
 }
 
@@ -55,9 +55,9 @@ console.log(`[TALLY_SCREENSHOT] target=${TARGET}`);
   });
   await page.waitForTimeout(800);
   await page.screenshot({ path: OUT_MOBILE, fullPage: true });
-  console.log(`[TALLY_SCREENSHOT] wrote ${OUT_MOBILE}`);
+  console.log(`[SHIFTLEDGER_SCREENSHOT] wrote ${OUT_MOBILE}`);
   await ctx.close();
 }
 
 await browser.close();
-console.log("[TALLY_SCREENSHOT] done");
+console.log("[SHIFTLEDGER_SCREENSHOT] done");
