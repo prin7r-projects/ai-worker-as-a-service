@@ -82,3 +82,40 @@ export const evalRuns = pgTable(
     index("eval_runs_profile_week_idx").on(table.workerProfileId, table.weekStart),
   ],
 );
+
+// Phase 3: Partner referral rev-share ledger
+export const revShareLedger = pgTable(
+  "rev_share_ledger",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: text("contract_id").references(() => contracts.id).notNull(),
+    referralCode: text("referral_code").notNull(),
+    shareRate: numeric("share_rate", { precision: 5, scale: 4 }).notNull().default("0.2500"), // 25% default
+    contractRevenueUsd: numeric("contract_revenue_usd", { precision: 10, scale: 2 }),
+    accruedUsd: numeric("accrued_usd", { precision: 10, scale: 2 }).default("0"),
+    paidOutUsd: numeric("paid_out_usd", { precision: 10, scale: 2 }).default("0"),
+    status: text("status").default("accruing"), // 'accruing'|'ready'|'paid'
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  },
+  (table) => [
+    index("rev_share_contract_idx").on(table.contractId),
+    index("rev_share_code_idx").on(table.referralCode),
+  ],
+);
+
+// Phase 3: Payment tracking for idempotency
+export const paymentEvents = pgTable(
+  "payment_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: text("contract_id").references(() => contracts.id).notNull(),
+    paymentStatus: text("payment_status").notNull(), // IPN payment_status value
+    nowpaymentsInvoiceId: text("nowpayments_invoice_id"),
+    rawPayload: jsonb("raw_payload"),
+    processedAt: timestamp("processed_at").defaultNow(),
+  },
+  (table) => [
+    index("payment_events_contract_status_idx").on(table.contractId, table.paymentStatus),
+  ],
+);

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'New Contract' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav', { currentPage: 'new-contract' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Back link -->
+      <a href="/app/contracts" class="text-sm text-audit no-underline hover:underline mb-4 inline-block">← Back to Contracts</a>
+
+      <h1 class="page-title mb-2">New Contract</h1>
+      <p class="page-subtitle mb-8">Create an outcome-based contract for an AI worker. You'll only pay for cleared outcomes.</p>
+
+      <!-- Error alert -->
+      <div data-form-error class="alert alert-error hidden mb-6"></div>
+
+      <form data-contract-form class="card p-6 space-y-2" style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+        <!-- Customer ID -->
+        <div class="form-group">
+          <label for="customerId" class="form-label form-label-required">Customer ID</label>
+          <input type="text" id="customerId" name="customerId" class="form-input" placeholder="UUID from checkout or seed" required>
+          <span class="form-hint">Your unique customer identifier from onboarding.</span>
+        </div>
+
+        <!-- Worker Profile -->
+        <div class="form-group">
+          <label for="workerProfile" class="form-label form-label-required">Worker Profile</label>
+          <select id="workerProfile" name="workerProfile" class="form-select" required>
+            <option value="">Select a worker profile…</option>
+            <% workerProfiles.forEach(function(p) { %>
+              <option value="<%= p.id %>">
+                <%= p.displayName %> — $<%= parseFloat(p.unitPriceUsd).toFixed(2) %>/outcome (<%= p.category.toUpperCase() %>)
+              </option>
+            <% }); %>
+          </select>
+          <span class="form-hint">The AI worker profile determines the verification rule and unit price.</span>
+        </div>
+
+        <!-- Tier -->
+        <div class="form-group">
+          <label for="tier" class="form-label form-label-required">Plan Tier</label>
+          <select id="tier" name="tier" class="form-select" required>
+            <option value="trial">Trial — 50 outcomes, no charge</option>
+            <option value="standard" selected>Standard — Production worker, per-outcome billing</option>
+            <option value="enterprise">Enterprise — Custom SLA, dedicated worker pool</option>
+          </select>
+        </div>
+
+        <!-- Outcome Target Slider -->
+        <div class="form-group">
+          <label for="outcomeTarget" class="form-label form-label-required">
+            Outcome Target: <span data-outcome-display class="font-mono text-audit">250</span> outcomes/shift
+          </label>
+          <input type="range" id="outcomeTarget" name="outcomeTarget"
+                 class="range-slider" min="10" max="1000" value="250" step="10"
+                 data-outcome-slider required>
+          <div class="flex justify-between text-xs text-slate font-mono">
+            <span>10</span><span>250</span><span>500</span><span>750</span><span>1000</span>
+          </div>
+          <span class="form-hint">Number of outcomes the worker will attempt per shift. The verifier clears compliant outcomes.</span>
+        </div>
+
+        <!-- Budget Cap -->
+        <div class="form-group">
+          <label for="budgetCapUsd" class="form-label">Budget Cap (USD)</label>
+          <input type="number" id="budgetCapUsd" name="budgetCapUsd" class="form-input" placeholder="e.g. 500.00" min="0" step="0.01">
+          <span class="form-hint">Maximum spend per shift. Leave empty for no cap.</span>
+        </div>
+
+        <!-- Term -->
+        <div class="form-group">
+          <label for="termMonths" class="form-label">Contract Term</label>
+          <select id="termMonths" name="termMonths" class="form-select">
+            <option value="1" selected>1 Month</option>
+            <option value="3">3 Months</option>
+            <option value="6">6 Months</option>
+            <option value="12">12 Months</option>
+          </select>
+        </div>
+
+        <!-- Auto-Renew -->
+        <div class="form-group">
+          <label class="flex items-center gap-2 cursor-pointer" style="flex-direction: row;">
+            <input type="checkbox" id="autoRenew" name="autoRenew" class="w-4 h-4 rounded border-chalk">
+            <span class="form-label">Auto-renew at end of term</span>
+          </label>
+        </div>
+
+        <!-- Referral Code -->
+        <div class="form-group">
+          <label for="referralCode" class="form-label">Referral / Agency Partner Code</label>
+          <input type="text" id="referralCode" name="referralCode" class="form-input" placeholder="Optional">
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-lg w-full mt-4">Create Contract</button>
+      </form>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

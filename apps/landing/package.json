@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "clsx": "2.1.1",
+    "drizzle-orm": "^0.38.3",
     "next": "15.1.4",
+    "postgres": "^3.4.5",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "tailwind-merge": "2.6.0"

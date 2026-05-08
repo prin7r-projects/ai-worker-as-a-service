@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Integrations' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav', { currentPage: 'integrations' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Integrations</h1>
+          <p class="page-subtitle">Connect source-of-truth systems so verifiers can check outcomes against real data</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <% providers.forEach(function(provider) {
+          const existing = integrations[provider.kind];
+        %>
+          <div class="provider-card<%= existing ? ' connected' : '' %>">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="provider-name"><%= provider.displayName %></h3>
+                <p class="text-sm text-gravel mt-1"><%= provider.description %></p>
+              </div>
+              <div class="provider-status" data-integration-status="<%= provider.kind %>">
+                <% if (existing) { %>
+                  <%- renderStatusBadge(existing.status === 'healthy' ? 'healthy' : existing.status === 'expired' ? 'expired' : 'degraded') %>
+                <% } else { %>
+                  <span class="badge badge-pending">NOT CONNECTED</span>
+                <% } %>
+              </div>
+            </div>
+
+            <% if (existing) { %>
+              <!-- Connected state -->
+              <div class="flex items-center gap-3 mt-2">
+                <span class="text-xs font-mono text-slate">
+                  Last heartbeat: <%= existing.lastHeartbeatAt ? new Date(existing.lastHeartbeatAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Never' %>
+                </span>
+                <button data-heartbeat-btn="<%= existing.id %>" class="btn btn-secondary btn-sm">Check Health</button>
+              </div>
+            <% } else { %>
+              <!-- Connect form -->
+              <form data-integration-form="<%= provider.kind %>" class="flex flex-col gap-3">
+                <div class="form-group">
+                  <label class="form-label">API Token</label>
+                  <input type="password" name="apiToken" class="form-input token-input"
+                         placeholder="Paste your <%= provider.displayName %> API token…" required>
+                  <span class="form-hint">Your token is encrypted at rest. We only use it to verify outcomes.</span>
+                </div>
+                <div data-error class="alert alert-error hidden"></div>
+                <div data-success class="alert alert-success hidden"></div>
+                <button type="submit" class="btn btn-primary">Connect <%= provider.displayName %></button>
+              </form>
+            <% } %>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Empty state if no integrations at all -->
+      <% if (Object.keys(integrations).length === 0) { %>
+        <div class="card p-8 mt-6">
+          <div class="empty-state">
+            <div class="empty-state-icon">🔌</div>
+            <h2 class="empty-state-title">No integrations connected</h2>
+            <p class="empty-state-desc">Connect a source-of-truth system like Zendesk, Intercom, Salesforce, or HubSpot so Shiftledger can verify that outcomes actually happened.</p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // apps/app/src/services/ShiftLedgerOrchestrator.ts
-// Shiftledger Phase 1 — End-to-end orchestration
+// Shiftledger Phase 2 — End-to-end orchestration (real Zendesk verifier)
 // Ties ContractService → ShiftScheduler → WorkerRunner → Verifier → LedgerService
 import { ContractService } from "./ContractService.js";
 import { ShiftScheduler } from "./ShiftScheduler.js";
@@ -78,7 +78,7 @@ export class ShiftLedgerOrchestrator {
       condition: { field: "status", operator: "eq", value: "completed" },
     }) as VerificationRule;
 
-    // 7. Verify each outcome
+    // 7. Verify each outcome (Phase 2: async — uses real Zendesk when available)
     let clearedCount = 0;
     let voidedCount = 0;
     const outcomes: Array<{
@@ -88,7 +88,7 @@ export class ShiftLedgerOrchestrator {
     }> = [];
 
     for (const event of events) {
-      const outcome = Verifier.verify(event.externalId, rule);
+      const outcome = await Verifier.verify(event.externalId, rule, args.customerId);
       outcomes.push({
         externalId: outcome.externalId,
         cleared: outcome.cleared,
@@ -104,7 +104,7 @@ export class ShiftLedgerOrchestrator {
         verificationDetails: {
           rule: outcome.rule,
           reason: outcome.reason,
-          verifierPhase: "1",
+          verifierPhase: "2",
         },
       });
 

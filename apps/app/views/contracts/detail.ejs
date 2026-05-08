@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Contract ' + contract.id.split('_').pop() }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav', { currentPage: 'contracts' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Back link -->
+      <a href="/app/contracts" class="text-sm text-audit no-underline hover:underline mb-4 inline-block">← Back to Contracts</a>
+
+      <!-- Contract Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">
+            <%= (contract.workerProfile && contract.workerProfile.displayName) || contract.workerProfileId %>
+            <span class="text-base font-mono text-slate ml-2"><%= contract.id %></span>
+          </h1>
+          <div class="flex items-center gap-3 mt-2">
+            <%- renderStatusBadge(contract.status) %>
+            <span class="text-sm text-gravel capitalize"><%= contract.tier %> tier</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <% if (contract.status === 'pending') { %>
+            <button data-activate-contract="<%= contract.id %>" class="btn btn-primary">Activate Contract</button>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Contract Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <div class="card stat-card">
+          <div class="stat-label">Outcome Target</div>
+          <div class="stat-value"><%= contract.outcomeTarget %></div>
+          <div class="stat-sub">per shift</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Unit Price</div>
+          <div class="stat-value">$<%= parseFloat(contract.unitPriceUsd).toFixed(2) %></div>
+          <div class="stat-sub">per cleared outcome</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Budget Cap</div>
+          <div class="stat-value"><%= contract.budgetCapUsd ? '$' + parseFloat(contract.budgetCapUsd).toLocaleString() : 'None' %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Term</div>
+          <div class="stat-value"><%= contract.termMonths %>mo</div>
+          <div class="stat-sub"><%= contract.autoRenew ? 'Auto-renews' : 'No auto-renew' %></div>
+        </div>
+      </div>
+
+      <!-- Shifts Section -->
+      <h2 class="font-display text-xl tracking-tight text-ink mb-4">Shifts</h2>
+
+      <% if (shifts.length === 0) { %>
+        <div class="card p-8 mb-8">
+          <div class="empty-state">
+            <div class="empty-state-icon">🔄</div>
+            <h2 class="empty-state-title">No shifts yet</h2>
+            <p class="empty-state-desc">Activate this contract to schedule the first shift. Workers will process outcomes and produce receipt lines.</p>
+            <% if (contract.status === 'pending') { %>
+              <button data-activate-contract="<%= contract.id %>" class="btn btn-primary">Activate Contract</button>
+            <% } %>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card overflow-x-auto mb-8">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>Shift ID</th>
+                <th>Status</th>
+                <th>Started</th>
+                <th>Attempted</th>
+                <th>Cleared</th>
+                <th>Voided</th>
+                <th class="hide-mobile">Clear Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% shifts.forEach(function(s) {
+                const clearRate = s.outcomesAttempted > 0
+                  ? ((s.outcomesCleared / s.outcomesAttempted) * 100).toFixed(1)
+                  : '0.0';
+              %>
+                <tr>
+                  <td class="mono text-audit"><%= s.id.slice(0, 8) %></td>
+                  <td><%- renderStatusBadge(s.status) %></td>
+                  <td class="mono"><%= s.startedAt ? new Date(s.startedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—' %></td>
+                  <td class="mono"><%= s.outcomesAttempted %></td>
+                  <td class="mono text-payday"><%= s.outcomesCleared %></td>
+                  <td class="mono text-flag"><%= s.outcomesVoided %></td>
+                  <td class="mono hide-mobile"><%= clearRate %>%</td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+      <!-- Receipt Lines Section -->
+      <h2 class="font-display text-xl tracking-tight text-ink mb-4">Receipt Lines</h2>
+
+      <% if (receiptLines.length === 0) { %>
+        <div class="card p-6">
+          <p class="text-sm text-gravel">No receipt lines recorded yet. Lines appear after a shift runs and outcomes are verified.</p>
+        </div>
+      <% } else { %>
+        <!-- Receipt Summary Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div class="card stat-card">
+            <div class="stat-label">Total Lines</div>
+            <div class="stat-value"><%= receiptSummary.totalLines %></div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Cleared</div>
+            <div class="stat-value text-payday"><%= receiptSummary.clearedCount %></div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Voided</div>
+            <div class="stat-value text-flag"><%= receiptSummary.voidedCount %></div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-value">$<%= parseFloat(receiptSummary.totalRevenueUsd).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
+          </div>
+        </div>
+
+        <div class="card overflow-x-auto">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>External ID</th>
+                <th>Status</th>
+                <th>Unit Price</th>
+                <th class="hide-mobile">Details</th>
+                <th class="text-right hide-mobile">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% receiptLines.forEach(function(line) { %>
+                <tr>
+                  <td class="mono"><%= line.externalId %></td>
+                  <td><%- renderReceiptLineStatus(line.status) %></td>
+                  <td class="mono">$<%= parseFloat(line.unitPriceUsd || '0').toFixed(2) %></td>
+                  <td class="text-sm text-gravel hide-mobile">
+                    <% if (line.verificationDetails && line.verificationDetails.reason) { %>
+                      <%= line.verificationDetails.reason.slice(0, 60) %><%= line.verificationDetails.reason.length > 60 ? '…' : '' %>
+                    <% } else { %>
+                      —
+                    <% } %>
+                  </td>
+                  <td class="mono text-right hide-mobile">
+                    <%= line.clearedAt
+                      ? new Date(line.clearedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                      : (line.voidedAt ? new Date(line.voidedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—') %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

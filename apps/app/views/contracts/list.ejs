@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Contracts' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav', { currentPage: 'contracts' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Contracts</h1>
+          <p class="page-subtitle">Outcome-based contracts and their current reconciliation state</p>
+        </div>
+        <a href="/app/contracts/new" class="btn btn-primary">+ New Contract</a>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <div class="card stat-card">
+          <div class="stat-label">Total Contracts</div>
+          <div class="stat-value"><%= stats.totalContracts %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Active</div>
+          <div class="stat-value"><%= stats.activeContracts %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Total Cleared</div>
+          <div class="stat-value"><%= stats.totalCleared %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Revenue (USD)</div>
+          <div class="stat-value">$<%= parseFloat(stats.totalRevenue).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
+        </div>
+      </div>
+
+      <!-- Contracts Table -->
+      <% if (contracts.length === 0) { %>
+        <div class="card p-8">
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h2 class="empty-state-title">No contracts yet</h2>
+            <p class="empty-state-desc">Create your first outcome-based contract to start running AI worker shifts. Pick a worker profile, set your outcome target, and we'll handle the rest.</p>
+            <a href="/app/contracts/new" class="btn btn-primary btn-lg">Create Your First Contract</a>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card overflow-x-auto">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>Contract ID</th>
+                <th>Profile</th>
+                <th>Tier</th>
+                <th>Status</th>
+                <th>Outcomes</th>
+                <th class="hide-mobile">Budget</th>
+                <th class="text-right hide-mobile">Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% contracts.forEach(function(c) { %>
+                <tr style="cursor: pointer" onclick="window.location.href='/app/contracts/<%= c.id %>'">
+                  <td class="mono">
+                    <a href="/app/contracts/<%= c.id %>" class="text-audit no-underline hover:underline"><%= c.id.split('_').slice(-1)[0] %></a>
+                  </td>
+                  <td class="font-medium"><%= (c.workerProfile && c.workerProfile.displayName) || c.workerProfileId %></td>
+                  <td class="capitalize"><%= c.tier %></td>
+                  <td><%- renderStatusBadge(c.status) %></td>
+                  <td class="mono"><%= c.outcomeTarget %></td>
+                  <td class="mono hide-mobile"><%= c.budgetCapUsd ? '$' + parseFloat(c.budgetCapUsd).toLocaleString() : '—' %></td>
+                  <td class="mono text-right hide-mobile"><%= new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

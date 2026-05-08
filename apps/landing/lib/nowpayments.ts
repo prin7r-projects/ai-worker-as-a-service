@@ -60,6 +60,7 @@ export function isPlanId(value: unknown): value is PlanId {
 export type CreateInvoiceInput = {
   plan: Plan;
   baseUrl: string;
+  orderId?: string;  // Phase 3: optional pre-determined order_id (contract ID)
 };
 
 export type NowpaymentsInvoice = {
@@ -79,7 +80,7 @@ export async function createNowpaymentsInvoice(input: CreateInvoiceInput): Promi
   const sandbox = (optionalEnv("NOWPAYMENTS_SANDBOX") ?? "false").toLowerCase() === "true";
   const apiBase = sandbox ? "https://api-sandbox.nowpayments.io" : "https://api.nowpayments.io";
 
-  const orderId = `shiftledger_${input.plan.id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const orderId = input.orderId ?? `shiftledger_${input.plan.id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
   const body = {
     price_amount: input.plan.depositUsd,

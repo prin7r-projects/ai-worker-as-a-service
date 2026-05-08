@@ -1,0 +1,15 @@
+<nav class="border-b border-chalk bg-card-white sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-14">
+      <a href="/app/contracts" class="flex items-center gap-2 no-underline">
+        <span class="font-display text-2xl tracking-tight text-obsidian">Shiftledger</span>
+        <span class="font-mono text-[0.625rem] uppercase tracking-widest text-slate mt-1">Dashboard</span>
+      </a>
+      <div class="flex items-center gap-1">
+        <a href="/app/contracts" class="nav-link<%= currentPage === 'contracts' ? ' active' : '' %>">Contracts</a>
+        <a href="/app/contracts/new" class="nav-link<%= currentPage === 'new-contract' ? ' active' : '' %>">New</a>
+        <a href="/app/integrations" class="nav-link<%= currentPage === 'integrations' ? ' active' : '' %>">Integrations</a>
+      </div>
+    </div>
+  </div>
+</nav>
