@@ -1,0 +1,8 @@
+{
+  "name": "shiftledger",
+  "private": true,
+  "scripts": {
+    "dev": "cd apps/landing && pnpm dev",
+    "build": "cd apps/landing && pnpm build"
+  }
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "cs-shift",
+    "displayName": "CS Shift",
+    "category": "cs",
+    "unitPriceUsd": "2.50",
+    "verificationRule": {
+      "sourceType": "zendesk",
+      "entity": "ticket",
+      "condition": { "field": "status", "operator": "eq", "value": "solved" }
+    },
+    "baselineClearRate": "0.8750",
+    "driftStatus": "green"
+  },
+  {
+    "id": "sdr-shift",
+    "displayName": "SDR Shift",
+    "category": "sdr",
+    "unitPriceUsd": "1.80",
+    "verificationRule": {
+      "sourceType": "salesforce",
+      "entity": "lead",
+      "condition": { "field": "status", "operator": "eq", "value": "contacted" }
+    },
+    "baselineClearRate": "0.8200",
+    "driftStatus": "green"
+  },
+  {
+    "id": "research-shift",
+    "displayName": "Research Shift",
+    "category": "research",
+    "unitPriceUsd": "3.20",
+    "verificationRule": {
+      "sourceType": "intercom",
+      "entity": "conversation",
+      "condition": { "field": "state", "operator": "eq", "value": "closed" }
+    },
+    "baselineClearRate": "0.9100",
+    "driftStatus": "green"
+  },
+  {
+    "id": "content-shift",
+    "displayName": "Content Shift",
+    "category": "content",
+    "unitPriceUsd": "4.00",
+    "verificationRule": {
+      "sourceType": "hubspot",
+      "entity": "task",
+      "condition": { "field": "status", "operator": "eq", "value": "completed" }
+    },
+    "baselineClearRate": "0.7950",
+    "driftStatus": "yellow"
+  }
+]
