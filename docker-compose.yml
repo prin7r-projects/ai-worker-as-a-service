@@ -12,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - shiftledger
 
   # --- Redis for BullMQ queues (Phase 1+) ---
   redis:
@@ -22,6 +24,44 @@ services:
       - "6379:6379"
     volumes:
       - redisdata:/data
+    networks:
+      - shiftledger
+
+  # --- App server (Phase 3) ---
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    image: shiftledger-app:latest
+    container_name: shiftledger-app
+    restart: unless-stopped
+    expose:
+      - "3001"
+    environment:
+      - DATABASE_URL=postgres://shiftledger:shiftledger@postgres:5432/shiftledger
+      - REDIS_URL=redis://redis:6379
+      - INTEGRATION_KEY=${INTEGRATION_KEY:-}
+      - ADMIN_API_KEY=${ADMIN_API_KEY:-}
+      - NOTION_TOKEN=${NOTION_TOKEN:-}
+      - POSTMARK_API_KEY=${POSTMARK_API_KEY:-}
+      - POSTMARK_FROM_EMAIL=${POSTMARK_FROM_EMAIL:-desk@ai-worker-as-a-service.prin7r.com}
+      - POSTMARK_TEMPLATE_ALIAS=${POSTMARK_TEMPLATE_ALIAS:-}
+      - ZENDESK_SUBDOMAIN=${ZENDESK_SUBDOMAIN:-}
+      - SALESFORCE_INSTANCE_URL=${SALESFORCE_INSTANCE_URL:-}
+      - DASHBOARD_URL=${DASHBOARD_URL:-https://ai-worker-as-a-service.prin7r.com/app}
+      - APP_SERVER_URL=http://app:3001
+      - NOTION_CONTRACTS_DSID=${NOTION_CONTRACTS_DSID:-}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shiftledger
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shiftledger-app.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/internal`)"
+      - "traefik.http.routers.shiftledger-app.entrypoints=websecure"
+      - "traefik.http.routers.shiftledger-app.tls.certresolver=letsencrypt"
+      - "traefik.http.services.shiftledger-app.loadbalancer.server.port=3001"
 
   landing:
     build:
@@ -32,6 +72,14 @@ services:
     restart: unless-stopped
     expose:
       - "3000"
+    environment:
+      - NOWPAYMENTS_API_KEY=${NOWPAYMENTS_API_KEY:-}
+      - NOWPAYMENTS_IPN_SECRET=${NOWPAYMENTS_IPN_SECRET:-}
+      - NOWPAYMENTS_SANDBOX=${NOWPAYMENTS_SANDBOX:-false}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-https://ai-worker-as-a-service.prin7r.com}
+      - DATABASE_URL=postgres://shiftledger:shiftledger@postgres:5432/shiftledger
+      - APP_SERVER_URL=http://app:3001
+      - NOTION_TOKEN=${NOTION_TOKEN:-}
     env_file:
       - .env
     labels:
@@ -40,7 +88,13 @@ services:
       - "traefik.http.routers.ai-worker-as-a-service.entrypoints=websecure"
       - "traefik.http.routers.ai-worker-as-a-service.tls.certresolver=letsencrypt"
       - "traefik.http.services.ai-worker-as-a-service.loadbalancer.server.port=3000"
+    networks:
+      - shiftledger
 
 volumes:
   pgdata:
   redisdata:
+
+networks:
+  shiftledger:
+    driver: bridge
