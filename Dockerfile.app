@@ -18,7 +18,7 @@ COPY apps/app/views apps/app/views
 COPY apps/app/public apps/app/public
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile --filter shiftledger-app
+RUN pnpm install --frozen-lockfile --filter shiftledger-app --ignore-scripts
 
 ENV NODE_ENV=production PORT=3001
 WORKDIR /app/apps/app
