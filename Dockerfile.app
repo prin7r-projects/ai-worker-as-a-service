@@ -1,27 +1,26 @@
-# [SHIFTLEDGER_APP_DOCKERFILE] Multi-stage TypeScript Express build.
-# 1. deps - install production deps
-# 2. builder - compile TypeScript to dist/
-# 3. runner - minimal node:22-alpine with the compiled app + views + public
-
-FROM node:22-alpine AS deps
-WORKDIR /app
-COPY apps/app/package.json apps/app/pnpm-lock.yaml* ./
-RUN corepack enable && pnpm install --frozen-lockfile --prod
-
-FROM node:22-alpine AS builder
-WORKDIR /app
-COPY apps/app/package.json apps/app/tsconfig.json ./
-COPY apps/app/src ./src
-COPY --from=deps /app/node_modules ./node_modules
-RUN corepack enable && pnpm install --frozen-lockfile && npx tsc
+# [SHIFTLEDGER_APP_DOCKERFILE] Single-stage tsx runner for Express app.
+# The app uses tsx (TypeScript execute) directly — no tsc build needed.
+# Dependencies are installed via pnpm in the workspace context.
 
 FROM node:22-alpine AS runner
 WORKDIR /app
+
+# Install pnpm
+RUN corepack enable
+
+# Copy workspace root files
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+
+# Copy app source and config
+COPY apps/app/package.json apps/app/tsconfig.json apps/app/
+COPY apps/app/src apps/app/src
+COPY apps/app/views apps/app/views
+COPY apps/app/public apps/app/public
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile --filter shiftledger-app
+
 ENV NODE_ENV=production PORT=3001
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=deps /app/node_modules ./node_modules
-COPY apps/app/views ./views
-COPY apps/app/public ./public
+WORKDIR /app/apps/app
 EXPOSE 3001
-CMD ["node", "dist/server.js"]
+CMD ["npx", "tsx", "src/server.ts"]
