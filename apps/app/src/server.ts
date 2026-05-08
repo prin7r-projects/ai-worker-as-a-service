@@ -759,10 +759,20 @@ app.post("/api/admin/contracts", adminAuth, async (req: Request, res: Response) 
 
     if (existingCustomer) {
       customerId = existingCustomer.id;
+      // Update agency partner code if referral provided and not already set
+      if (referralCode && !existingCustomer.agencyPartnerCode) {
+        await db
+          .update(schema.customers)
+          .set({ agencyPartnerCode: referralCode })
+          .where(eq(schema.customers.id, customerId));
+      }
     } else {
       const [newCustomer] = await db
         .insert(schema.customers)
-        .values({ email: customerEmail.toLowerCase().trim() })
+        .values({
+          email: customerEmail.toLowerCase().trim(),
+          agencyPartnerCode: referralCode ?? null,
+        })
         .returning();
       customerId = newCustomer.id;
     }
