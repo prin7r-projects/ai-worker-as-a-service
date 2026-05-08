@@ -3,20 +3,38 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------------------------------
-   [SHIFTLEDGER_GLOBALS] Receipt-printer baseline.
-   Palette + type pair locked in /DESIGN.md sections 4-6.
+   [SHIFTLEDGER_GLOBALS] Architect's blueprint on milky vellum.
+   Refresh 2026-05-08 — palette + type lifted from the ElevenLabs reference
+   (Waldenburg-300 whisper headlines + universal #e5e5e5 hairline + 9999px
+   pill CTAs) with the canvas swapped from #fdfcfc eggshell to #FAFAF8 milky
+   per the no-beige rule. Shiftledger-only retentions: audit blue, payday
+   green, and flag red are kept as semantic accents because the receipt
+   metaphor still drives the page narrative.
    --------------------------------------------------------------------------- */
 
-@import url("https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 :root {
-  --paper: #FAFAF8;
-  --paper-2: #F0EFEC;
-  --ink: #0E0E0C;
-  --ink-2: #3A3A36;
-  --audit: #1F4F8A;
-  --payday: #2E6F40;
-  --flag: #B5371F;
+  /* Lifted from ElevenLabs (canvas swapped to milky #FAFAF8) */
+  --paper: #FAFAF8;          /* was eggshell #fdfcfc — milky base per no-beige rule */
+  --paper-2: #F5F3F1;        /* powder — secondary surface, hover, zebra band */
+  --card-white: #FFFFFF;     /* card-white — pops off milky ground */
+  --chalk: #E5E5E5;          /* universal hairline — borders, dividers, outlines */
+  --fog: #B1B0B0;            /* disabled / desaturated logo grid */
+  --slate: #A59F97;          /* tertiary text */
+  --gravel: #777169;         /* secondary body text, captions */
+  --ink-2: #3A3A36;          /* mid-tone text — kept from prior Shiftledger token for table headers */
+  --ink: #0E0E0C;            /* primary type — near-obsidian, retained for receipt-grade contrast */
+  --obsidian: #000000;       /* CTA fill, logomark — pure black per ElevenLabs pill spec */
+
+  /* Shiftledger-specific semantic accents (kept as receipt metaphor anchors) */
+  --audit: #1F4F8A;          /* audit-stamp blue — focus ring, link */
+  --payday: #2E6F40;         /* payday-green — paid state */
+  --flag: #B5371F;           /* unpaid / void red */
+
+  /* Hairline shadows lifted directly from ElevenLabs */
+  --shadow-hairline: rgba(0, 0, 0, 0.4) 0px 0px 1px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
+  --shadow-inset-subtle: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset;
 }
 
 html {
@@ -27,12 +45,14 @@ html {
 }
 
 body {
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
-  letter-spacing: -0.005em;
+  /* Inter body per ElevenLabs spec — display headlines switch to Cormorant Garamond 300 */
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
   background: var(--paper);
   color: var(--ink);
+  font-feature-settings: "kern" 1;
 }
 
 ::selection {
@@ -40,11 +60,11 @@ body {
   color: var(--paper);
 }
 
-/* Receipt perforation rule — used as section divider */
+/* Receipt perforation rule — kept as Shiftledger brand vestige inside a more refined hairline system */
 .perf {
   display: block;
   border: 0;
-  border-top: 1px dashed var(--ink-2);
+  border-top: 1px dashed var(--chalk);
   margin: 0;
 }
 
@@ -59,11 +79,69 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* All-caps mono labels */
+/* All-caps mono labels — WaldenburgFH-equivalent stamp identity */
 .label-mono {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: var(--ink-2);
+  color: var(--gravel);
+}
+
+/* Display headlines — Cormorant Garamond 300 substituting Waldenburg 300 */
+.font-display, .display-serif {
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+/* Filled pill CTA — ElevenLabs primary button */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--obsidian);
+  color: var(--paper);
+  border-radius: 9999px;
+  padding: 10px 18px;
+  border: 1px solid var(--chalk);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px;
+  transition: background 120ms ease-out;
+}
+.btn-pill:hover { background: var(--ink); }
+
+/* Ghost pill CTA — secondary actions */
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-white);
+  color: var(--obsidian);
+  border-radius: 9999px;
+  padding: 10px 16px;
+  border: 1px solid var(--chalk);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 2px 0px;
+  transition: background 120ms ease-out;
+}
+.btn-pill-ghost:hover { background: var(--paper-2); }
+
+/* Card surface — ElevenLabs hairline-floated white card */
+.card-hairline {
+  background: var(--card-white);
+  border-radius: 16px;
+  box-shadow: var(--shadow-hairline);
+}
+
+/* Word-level underline emphasis — borrowed from Anthropic, applied sparingly */
+.emph-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  text-decoration-color: var(--ink);
 }

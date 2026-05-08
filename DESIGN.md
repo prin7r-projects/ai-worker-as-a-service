@@ -20,13 +20,13 @@ The brand is "**a payroll for AI workers**" — outcomes, not hours, not tokens.
 
 ## 2. Visual positioning
 
-Shiftledger is a **ledger / payroll-stub / receipt printer** brand, not an "AI agent" brand. The hero is a stylized payday stub — workers ran a shift, the shift is reconciled, the buyer is charged only the cleared lines. The aesthetic should evoke an **audit-grade financial instrument**, not a Slackbot.
+Shiftledger reads as an **architect's blueprint laid on a milky vellum**: type-first, almost severe, where Cormorant Garamond 300 headlines whisper at display scale and pure-black pill CTAs land as the page's only punctuation. The receipt metaphor stays — workers ran a shift, the shift is reconciled, the buyer is charged only the cleared lines — but it now sits inside an editorial canvas borrowed from ElevenLabs (universal #E5E5E5 hairlines, hairline-floated white cards on a #FAFAF8 milky ground), with the audit blue / payday green / flag red kept as reserved semantic accents.
 
-**Yes:** crisp paper white, dense black ink, mono-spaced numerics, hairline rules, zebra-striped tables, ledger-margin tick marks, **a stamp / chop on the cleared receipt**, audit-blue accent, payday-green for the "paid" state.
+**Yes:** milky-white paper ground, near-black ink, Cormorant Garamond 300 display headlines at -0.02em tracking, Inter 400/500 for body/UI, IBM Plex Mono numerics, universal hairline borders, 9999px black pill CTAs, hairline-shadow white cards, audit-blue accent, payday-green for the "paid" state, word-level underlines for keyword emphasis (Anthropic mechanic borrowed for receipt callouts).
 
-**No:** purple/teal AI gradients, robot mascots, brain icons, 3D glass, neon, animated sparkles, "98% time saved" hero stats, hero photos of headsets, tech-bro chat bubbles.
+**No:** beige/cream backgrounds, purple/teal AI gradients, robot mascots, brain icons, 3D glass, neon, animated sparkles, "98% time saved" hero stats, hero photos of headsets, tech-bro chat bubbles, button radii smaller than 9999px on primary CTAs (per ElevenLabs pill discipline).
 
-**Reference moodboard (verbal).** Square (the receipts), Stripe (the financial-instrument typography in their docs but **not** their indigo palette), Patek Philippe service-document typography, the New York Times printed crossword margin, an old US Treasury receipt, the printing on a gas-pump receipt. Slip a touch of warmth in via the paper-tone background — this should feel like a paid invoice you'd file in a folder, not a dashboard.
+**Reference moodboard (verbal).** ElevenLabs (the architect-blueprint-on-vellum essence — palette + Waldenburg-equivalent serif headline + universal hairline + pill CTAs — with the canvas swapped from eggshell #fdfcfc to milky #FAFAF8 per the no-beige rule), Square (receipts), Patek Philippe service-document typography, an old US Treasury receipt, the printing on a gas-pump receipt. The page should feel like a paid invoice an architect would file, not a dashboard.
 
 ## 3. ShadCN baseline and local component policy
 
@@ -40,47 +40,57 @@ Shiftledger is a **ledger / payroll-stub / receipt printer** brand, not an "AI a
 
 ## 4. Color tokens
 
-A 6-color palette tuned to "**paid receipt**". HSL values are also locked in `globals.css` for runtime use; hex values are the source of truth.
+A 12-token palette: 9 ElevenLabs-derived neutrals (canvas swapped to milky #FAFAF8) plus 3 Shiftledger semantic accents that anchor the receipt narrative. Hex values are the source of truth.
 
 | Token | Hex | Role |
 |---|---|---|
-| `paper`         | `#FAFAF8` | Background — the warm white of a printed receipt |
-| `paper-2`       | `#F0EFEC` | Surface — slightly tanner band for table zebra striping and footer |
-| `ink`           | `#0E0E0C` | Primary type, hairlines, all default ledger ink |
-| `ink-2`         | `#3A3A36` | Secondary type, table headers, captions |
-| `audit`         | `#1F4F8A` | Accent / link / focus ring — audit-stamp blue |
-| `payday`        | `#2E6F40` | Success / "paid" / CTA — payday-green |
-| `flag`          | `#B5371F` | Alert / unpaid / void stamp red (used sparingly) |
+| `paper`         | `#FAFAF8` | Page ground — milky white (was ElevenLabs eggshell #fdfcfc; swapped per no-beige rule) |
+| `paper-2`       | `#F5F3F1` | Powder surface — section highlights, hover, zebra band |
+| `card-white`    | `#FFFFFF` | Card surface — pops off the milky ground, paired with hairline shadow |
+| `chalk`         | `#E5E5E5` | Universal hairline — borders, dividers, button outlines (single-color border discipline) |
+| `fog`           | `#B1B0B0` | Disabled / desaturated logo grid |
+| `slate`         | `#A59F97` | Tertiary text, icon strokes |
+| `gravel`        | `#777169` | Secondary body text, captions, mono-label color |
+| `ink-2`         | `#3A3A36` | Mid-dark text, table headers |
+| `ink`           | `#0E0E0C` | Primary type — near-obsidian retained for receipt-grade contrast |
+| `obsidian`      | `#000000` | CTA fill, logomark — pure black per ElevenLabs pill spec |
+| `audit`         | `#1F4F8A` | Accent / link / focus ring — audit-stamp blue (Shiftledger semantic) |
+| `payday`        | `#2E6F40` | Success / "paid" — payday-green (Shiftledger semantic) |
+| `flag`          | `#B5371F` | Alert / unpaid / void stamp red (Shiftledger semantic, sparingly) |
 
-Contrast ratios verified (WCAG 2.1 AA): `ink` on `paper` = 16.8:1, `audit` on `paper` = 7.2:1, `payday` on `paper` = 4.8:1, `paper` on `payday` = 4.8:1, `paper` on `audit` = 7.2:1.
+Contrast ratios verified (WCAG 2.1 AA): `ink` on `paper` = 16.8:1, `obsidian` on `paper` = 20.5:1, `audit` on `paper` = 7.2:1, `payday` on `paper` = 4.8:1, `paper` on `payday` = 4.8:1, `paper` on `obsidian` = 20.5:1.
 
 ## 5. Typography
 
-Two-family pairing, **no third family**:
+Three-family pairing per ElevenLabs reference, with Cormorant Garamond 300 substituting Waldenburg 300 (the signature whisper-weight serif headline):
 
 | Role | Family | Source | Weight |
 |---|---|---|---|
-| Display & headlines    | **Cardo**           | Google Fonts | 400 / 700 |
-| Body copy              | **Inter**           | Google Fonts | 400 / 500 / 600 |
-| Numerics, IDs, mono UI | **IBM Plex Mono**   | Google Fonts | 400 / 500 / 600 |
+| Display & headlines    | **Cormorant Garamond**  | Google Fonts | 300 / 400 (300 = signature whisper weight) |
+| Body copy & UI         | **Inter**               | Google Fonts | 400 / 500 / 600 |
+| Numerics, IDs, mono UI | **IBM Plex Mono**       | Google Fonts | 400 / 500 / 600 |
 
-Why Cardo: a long-text serif designed for academic/financial publishing. It looks "official" and ages well — no startup-y vibe. Italic is true italic, not slanted roman.
+Why Cormorant Garamond 300: it is the closest open-source substitute for ElevenLabs Waldenburg 300 — a light-weight classical serif that whispers where competitors shout. At 48-96px with -0.02em tracking, the letters breathe and read as architectural lettering, not typical web type. Inverts every SaaS convention of bold grotesque headlines, matching the "audit-grade financial instrument" voice.
 
-Why IBM Plex Mono: numeric set is monospaced and tabular — required for the receipt rows where columns of dollar amounts must line up to the cent.
+Why Inter (400/500/600): all body copy, navigation, buttons, captions, footer. Weight 400 for body and descriptive text; weight 500 for interactive labels; the 0.01em letter-spacing keeps small sizes legible on the milky ground.
 
-Type scale (mobile-first):
+Why IBM Plex Mono: receipt IDs, dollar columns, all-caps mono labels ("PAY STUB", "OUTCOME LEDGER"). Substitutes ElevenLabs Geist Mono.
 
-| Token | px / rem | Line-height | Use |
-|---|---|---|---|
-| `display`   | 56-104px clamp     | 0.95 | Hero only |
-| `h1`        | 36-56px clamp      | 1.05 | Section headings |
-| `h2`        | 24-32px clamp      | 1.15 | Block headings |
-| `h3`        | 18-22px clamp      | 1.3  | Sub-block |
-| `body`      | 16-17px            | 1.55 | Default |
-| `caption`   | 13-14px            | 1.4  | Footnotes, table headers |
-| `mono-xs`   | 12px               | 1.3  | Receipt IDs |
+Type scale (mobile-first, lifted from ElevenLabs scale + Shiftledger receipt-display lineage):
 
-All-caps labels (e.g. "PAY STUB", "OUTCOME LEDGER") use Plex Mono, 12px, tracking +0.18em.
+| Token | px / rem | Line-height | Letter-spacing | Use |
+|---|---|---|---|---|
+| `display`   | 48-96px clamp      | 1.05 | -0.02em | Hero only |
+| `h1`        | 36-56px clamp      | 1.10 | -0.02em | Section headings |
+| `h2`        | 24-32px clamp      | 1.17 | -0.005em | Block headings |
+| `h3`        | 18-22px clamp      | 1.4  | normal | Sub-block |
+| `body`      | 16px               | 1.5  | 0.01em | Default |
+| `caption`   | 13px               | 1.4  | normal | Footnotes |
+| `mono-xs`   | 12px               | 1.3  | 0.18em | Receipt IDs, all-caps mono labels |
+
+All-caps mono labels (e.g. "PAY STUB", "OUTCOME LEDGER") use IBM Plex Mono, 12px, tracking +0.18em — analogous to ElevenLabs WaldenburgFH stamp identity.
+
+**Word-level underline emphasis (borrowed from Anthropic):** key receipt terms ("paid", "verified", "outcome") may use a 2px text-decoration underline at 6px offset, color `--ink`, in lieu of color emphasis. Use sparingly — one or two words per headline maximum.
 
 ## 6. Spacing, radius, shadows, and borders
 
@@ -189,3 +199,4 @@ git add docs/screenshots && git commit -m "design: refresh production screenshot
 |---|---|---|
 | 2026-05-08 | Wave 2 build agent (Opus 4.7-1m) | Initial DESIGN.md. All 15 sections populated. Brand identity = "Tally / outcome ledger for AI workers". Palette + type pair locked. Landing structure locked at 8 zones. NOWPayments CTA wired to `POST /v1/invoice` with HMAC-SHA512 IPN handler. Production screenshots committed under `/docs/screenshots/`. |
 | 2026-05-08 | Wave 2 rebrand agent (Opus 4.7-1m) | Brand renamed **Tally → Shiftledger** after Wave 2 name research flagged Tally as FAIL: `tally.so` is a $2M-ARR no-code form-builder SaaS already occupying the brand in B2B SaaS. Shiftledger preserves the outcome-ledger essence — the brand copy "you only pay when the shift ships" extends naturally from the new name. Search-and-replace across landing copy, docs, logo wordmark, og:title, metadata, package.json, docker-compose, debug tags, and the NOWPayments order_id prefix. Logo SVG viewBox widened (220 → 360) and stamp position shifted (translate 150 → 290) to fit the longer wordmark. Domain `shiftledger.com` registered (Moniker, 2019) with no live A-record and no SERP collision. Repo slug, live URL, and NOWPayments tier amounts unchanged. |
+| 2026-05-08 | Wave 2 design refresh — elevenlabs with milky-canvas adaptation | Lifted full ElevenLabs token stack (palette + typography + components + hairline shadows) with the canvas hex swapped from `#fdfcfc` eggshell to `#FAFAF8` milky per the no-beige rule. Palette expanded from 7 → 12 tokens: 9 ElevenLabs-derived neutrals (`paper`, `paper-2`, `card-white`, `chalk`, `fog`, `slate`, `gravel`, `ink-2`, `ink`, `obsidian`) plus 3 Shiftledger semantic accents retained (`audit`, `payday`, `flag`). Display font swapped from Cardo (financial-publishing serif) to **Cormorant Garamond 300** (open-source Waldenburg-300 substitute) for whisper-weight architectural lettering at 48-96px. Component classes added in `globals.css`: `.btn-pill` (filled black 9999px ElevenLabs CTA), `.btn-pill-ghost` (white-fill secondary), `.card-hairline` (16px radius white card with hairline-floated shadow), `.emph-underline` (Anthropic word-level underline emphasis). Tailwind config gained ElevenLabs hairline shadow tokens. Brand essence (architect's blueprint on milky vellum) re-anchored in §2. |
