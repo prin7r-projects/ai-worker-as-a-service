@@ -1,4 +1,28 @@
 services:
+  # --- Postgres for Shiftledger app (Phase 1+) ---
+  postgres:
+    image: postgres:16-alpine
+    container_name: shiftledger-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: shiftledger
+      POSTGRES_PASSWORD: shiftledger
+      POSTGRES_DB: shiftledger
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # --- Redis for BullMQ queues (Phase 1+) ---
+  redis:
+    image: redis:7-alpine
+    container_name: shiftledger-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
   landing:
     build:
       context: .
@@ -16,3 +40,7 @@ services:
       - "traefik.http.routers.ai-worker-as-a-service.entrypoints=websecure"
       - "traefik.http.routers.ai-worker-as-a-service.tls.certresolver=letsencrypt"
       - "traefik.http.services.ai-worker-as-a-service.loadbalancer.server.port=3000"
+
+volumes:
+  pgdata:
+  redisdata:

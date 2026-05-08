@@ -18,7 +18,7 @@ interface WorkerProfileSeed {
 }
 
 async function seed() {
-  const seedPath = resolve(__dirname, "../../../data/seed/worker-profiles.json");
+  const seedPath = resolve(__dirname, "../../../../data/seed/worker-profiles.json");
   const raw = readFileSync(seedPath, "utf-8");
   const profiles: WorkerProfileSeed[] = JSON.parse(raw);
 

@@ -1,0 +1,8 @@
+{
+  "schema": "./src/db/schema.ts",
+  "out": "./migrations",
+  "dialect": "postgresql",
+  "dbCredentials": {
+    "url": "postgres://shiftledger:shiftledger@localhost:5433/shiftledger"
+  }
+}
