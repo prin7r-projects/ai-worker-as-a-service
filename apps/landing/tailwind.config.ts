@@ -13,8 +13,8 @@ const config: Config = {
     },
     extend: {
       colors: {
-        paper: "#F5F1E8",
-        "paper-2": "#ECE6D5",
+        paper: "#FAFAF8",
+        "paper-2": "#F0EFEC",
         ink: "#0E0E0C",
         "ink-2": "#3A3A36",
         audit: "#1F4F8A",

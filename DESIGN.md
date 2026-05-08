@@ -44,8 +44,8 @@ A 6-color palette tuned to "**paid receipt**". HSL values are also locked in `gl
 
 | Token | Hex | Role |
 |---|---|---|
-| `paper`         | `#F5F1E8` | Background — the warm white of a printed receipt |
-| `paper-2`       | `#ECE6D5` | Surface — slightly tanner band for table zebra striping and footer |
+| `paper`         | `#FAFAF8` | Background — the warm white of a printed receipt |
+| `paper-2`       | `#F0EFEC` | Surface — slightly tanner band for table zebra striping and footer |
 | `ink`           | `#0E0E0C` | Primary type, hairlines, all default ledger ink |
 | `ink-2`         | `#3A3A36` | Secondary type, table headers, captions |
 | `audit`         | `#1F4F8A` | Accent / link / focus ring — audit-stamp blue |
