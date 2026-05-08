@@ -1,0 +1,18 @@
+services:
+  landing:
+    build:
+      context: .
+      dockerfile: Dockerfile.landing
+    image: tally-landing:latest
+    container_name: tally-landing
+    restart: unless-stopped
+    expose:
+      - "3000"
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ai-worker-as-a-service.rule=Host(`ai-worker-as-a-service.prin7r.com`)"
+      - "traefik.http.routers.ai-worker-as-a-service.entrypoints=websecure"
+      - "traefik.http.routers.ai-worker-as-a-service.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ai-worker-as-a-service.loadbalancer.server.port=3000"

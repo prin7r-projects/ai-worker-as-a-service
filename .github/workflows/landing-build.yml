@@ -1,0 +1,36 @@
+name: landing build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/landing/**"
+      - "Dockerfile.landing"
+      - ".github/workflows/landing-build.yml"
+  pull_request:
+    paths:
+      - "apps/landing/**"
+      - "Dockerfile.landing"
+      - ".github/workflows/landing-build.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: apps/landing/pnpm-lock.yaml
+      - name: Install
+        working-directory: apps/landing
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        working-directory: apps/landing
+        run: pnpm build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"

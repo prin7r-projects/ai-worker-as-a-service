@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>Tally — pitch deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --paper:#F5F1E8; --paper-2:#ECE6D5;
+      --ink:#0E0E0C; --ink-2:#3A3A36;
+      --audit:#1F4F8A; --payday:#2E6F40; --flag:#B5371F;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;}
+    body{padding:40px 0 80px;line-height:1.55;}
+    .deck{max-width:1100px;margin:0 auto;padding:0 24px;}
+    .slide{
+      background:var(--paper);
+      border:1px solid var(--ink);
+      border-radius:0;
+      padding:56px 64px;
+      margin:0 0 32px;
+      min-height:520px;
+      display:flex;flex-direction:column;justify-content:flex-start;
+      page-break-after:always;
+      position:relative;
+    }
+    .slide::before{
+      content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--ink);
+    }
+    .meta{
+      font-family:"IBM Plex Mono",ui-monospace,monospace;
+      font-size:11px;color:var(--ink-2);letter-spacing:.18em;text-transform:uppercase;
+      display:flex;justify-content:space-between;margin-bottom:24px;
+    }
+    .num{color:var(--audit)}
+    h1{
+      font-family:Cardo,Georgia,serif;font-weight:700;font-style:italic;
+      font-size:56px;line-height:1.05;margin:0 0 32px;letter-spacing:-0.012em;
+    }
+    .slide-1 h1{font-size:96px;letter-spacing:-0.02em;}
+    ul{padding-left:0;list-style:none;margin:0;}
+    li{
+      position:relative;padding-left:42px;padding-right:16px;margin:18px 0;
+      font-size:21px;line-height:1.45;border-bottom:1px solid var(--paper-2);padding-bottom:14px;
+    }
+    li:last-child{border-bottom:none;}
+    li::before{
+      content:"§";font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:14px;
+      color:var(--audit);position:absolute;left:0;top:5px;letter-spacing:.1em;
+    }
+    .stamp{
+      position:absolute;right:48px;bottom:36px;
+      width:120px;height:120px;border-radius:50%;
+      border:1.4px solid var(--audit);
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      transform:rotate(-7deg);
+      font-family:"IBM Plex Mono",ui-monospace,monospace;
+      font-size:9px;letter-spacing:.16em;color:var(--audit);
+      line-height:1.4;padding:18px;
+    }
+    .perf{border-bottom:1px dashed var(--ink-2);margin:24px 0;}
+    .receipt{
+      font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:18px;
+      background:var(--paper-2);border:1px solid var(--ink);padding:32px;margin-top:24px;
+    }
+    .receipt .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(14,14,12,.10);}
+    .receipt .row:last-child{border-bottom:none;font-weight:600;font-size:22px;border-top:2px solid var(--ink);margin-top:12px;padding-top:18px;}
+    .receipt .label{color:var(--ink-2);font-size:11px;text-transform:uppercase;letter-spacing:.18em;}
+    .footnote{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:var(--ink-2);letter-spacing:.18em;margin-top:auto;text-transform:uppercase;}
+    @media print {
+      body{background:#fff;padding:0;}
+      .slide{margin:0;border:none;page-break-after:always;min-height:90vh;}
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide slide-1">
+    <div class="meta"><span class="num">SLIDE 01 / 10</span><span>TALLY — OUTCOME ECONOMY</span></div>
+    <h1><i>tally.</i></h1>
+    <p style="font-family:Cardo,serif;font-size:32px;line-height:1.25;max-width:740px;margin:0 0 24px;">
+      Outcome ledger for AI workers. <em>You only pay when the shift ships.</em>
+    </p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink-2);">
+      Pre-trained worker profiles. Unit-priced outcome contracts. Per-shift receipts.
+    </p>
+    <div class="stamp">PAID<br/>TALLY<br/>OUTCOMES<br/>VERIFIED<br/>2026-05-08</div>
+    <div class="footnote">PRIN7R / WAVE 2 / DRAFT 1</div>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 02 / 10</span><span>THE PROBLEM</span></div>
+    <h1>What everyone else is selling.</h1>
+    <ul>
+      <li>Hour-billed AI consultancies bill hours, not delivery. Buyers carry the variance.</li>
+      <li>Per-token APIs make CFOs furious — variance is unforecastable.</li>
+      <li>Per-seat "AI agents" sell login chairs that nobody sits in.</li>
+      <li>Custom-AI shops sell pilots that never end.</li>
+      <li><strong>No buyer asked for any of this. Buyers asked for cleared lines.</strong></li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 03 / 10</span><span>MARKET OPENING</span></div>
+    <h1>The buyer is already on the second strike.</h1>
+    <ul>
+      <li>Ops leaders (COO, VP Ops, Head of CS) have queues that don't fit headcount.</li>
+      <li>They have already burned a budget on hour-billed AI and per-token agents.</li>
+      <li>They want a fixed price per cleared outcome to defend internally.</li>
+      <li>That product does not exist today. We are building it.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 04 / 10</span><span>THE PRODUCT</span></div>
+    <h1>Six worker profiles. One unit price each.</h1>
+    <ul>
+      <li>Customer Support · SDR · Researcher · Writer · Ops Coordinator · QA Auditor.</li>
+      <li>Each profile carries a unit price ($5–$12 / cleared outcome) and a verification rule.</li>
+      <li>The runtime reads your source of truth at run time. No fine-tuning.</li>
+      <li>Per-shift receipts list cleared lines and voided lines.</li>
+      <li>The receipt is the contract.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 05 / 10</span><span>HOW IT WORKS</span></div>
+    <h1>How a shift gets paid out.</h1>
+    <ul>
+      <li>1. Worker runs against the queue.</li>
+      <li>2. Each line is verified against a buyer-side rule.</li>
+      <li>3. Cleared lines draw down the pool. Voided lines never charge.</li>
+      <li>4. Receipt is issued weekly.</li>
+      <li>5. Settlement = NOWPayments USDT/USDC; invoice is USD-denominated.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 06 / 10</span><span>THE RECEIPT</span></div>
+    <h1>This is the artifact of value.</h1>
+    <div class="receipt">
+      <div class="row"><span class="label">SHIFT</span><span>CUSTOMER-SUPPORT-WK19</span></div>
+      <div class="row"><span class="label">DATES</span><span>2026-05-04 / 2026-05-08</span></div>
+      <div class="row"><span class="label">RESOLVED</span><span>312 / 350</span></div>
+      <div class="row"><span class="label">VOIDED</span><span style="color:var(--flag)">38 (verification failed)</span></div>
+      <div class="row"><span class="label">RATE</span><span>$6.00 / outcome</span></div>
+      <div class="row"><span class="label">TOTAL CHARGED</span><span style="color:var(--payday)">$1,872.00</span></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 07 / 10</span><span>PRICING</span></div>
+    <h1>Three tiers. All deposit-into-pool.</h1>
+    <ul>
+      <li><strong>Trial — $199 (capped).</strong> 25 outcome receipts. One channel. One profile.</li>
+      <li><strong>Standard — $999 / month.</strong> 200 receipts, refillable. 1–2 channels. 1 profile.</li>
+      <li><strong>Enterprise — from $5,000.</strong> Custom pool. Multiple profiles. White-label. Dedicated CSM.</li>
+      <li>NOWPayments hosted invoice (USDT / USDC) on every tier.</li>
+      <li>Refund = unused pool at the contracted unit rate, minus 4 % settlement.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 08 / 10</span><span>WHY TALLY WINS</span></div>
+    <h1>Five ways the receipt beats the alternative.</h1>
+    <ul>
+      <li>The unit price is the contract — buyers sign once, not every quarter.</li>
+      <li>Verification is built-in — voided lines are voided.</li>
+      <li>No pilot — pre-trained profiles, first cleared receipt within 14 days.</li>
+      <li>No retainer — the buyer pays only for cleared lines.</li>
+      <li>Only outcome-priced entry in the buyer's vendor matrix.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 09 / 10</span><span>90-DAY PLAN</span></div>
+    <h1>Traction milestones, not signups.</h1>
+    <ul>
+      <li>Day 0: landing live; NOWPayments wired.</li>
+      <li>Day 30: 3 cleared receipts, 5 Trial deposits.</li>
+      <li>Day 60: 8 Standard customers, 1 partner agency.</li>
+      <li>Day 90: 1 Enterprise contract, ARR ≥ $48K, refund ratio &lt; 8 %.</li>
+      <li>Channels: operator-leader Slacks · LinkedIn organic · comparison pages · conference 1:1s.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="meta"><span class="num">SLIDE 10 / 10</span><span>ASK</span></div>
+    <h1>What we want from this room.</h1>
+    <ul>
+      <li>Three design partners for the first 90 days (free Trial + 50 % off Standard 6 months).</li>
+      <li>One procurement-friendly enterprise to anchor the Enterprise track.</li>
+      <li>desk@ai-worker-as-a-service.prin7r.com</li>
+      <li>github.com/prin7r-projects/ai-worker-as-a-service</li>
+      <li><em>Ledger first. Receipts second. Everything else is theatre.</em></li>
+    </ul>
+    <div class="stamp">PAID<br/>TALLY<br/>OUTCOMES<br/>VERIFIED<br/>2026-05-08</div>
+  </section>
+
+</div>
+</body>
+</html>

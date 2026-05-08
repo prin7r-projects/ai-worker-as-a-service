@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ai-worker-as-a-service.prin7r.com/sitemap.xml
