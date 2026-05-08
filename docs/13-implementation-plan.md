@@ -37,11 +37,11 @@
 **Effort.** S — 30-50 tool-uses, 2-4h.
 
 **DoD.**
-- [ ] `pnpm install` clean.
-- [ ] `pnpm -F landing build` produces standalone.
-- [ ] `pnpm -F app dev` starts open-saas Wasp app on `:3001`.
-- [ ] `data/seed/worker-profiles.json` validates against `apps/app/src/db/schema.ts`.
-- [ ] Production landing still returns 200.
+- [x] `pnpm install` clean. Verified Phase 0 (PRI-2317).
+- [ ] `pnpm -F landing build` produces standalone. ⚠️ Pre-existing Next.js 15 static gen error (Html component in pages path); dev server works.
+- [x] `pnpm -F app dev` starts TypeScript Express app on `:3001` with Hello-Shiftledger placeholder (PRI-2317). Drizzle ORM + PostgreSQL, not Wasp — Phase 1 migrates to Drizzle per spec.
+- [x] `data/seed/worker-profiles.json` validates against `apps/app/src/db/schema.ts`. 4 profiles (cs-shift, sdr-shift, research-shift, content-shift) with structured verification rules.
+- [x] Production landing still returns 200 (verified 2026-05-08).
 
 **Hand-off context.**
 - Wave 2 landing uses `apps/landing/` only. Don't break it.
