@@ -77,8 +77,8 @@ services:
       - NOWPAYMENTS_IPN_SECRET=${NOWPAYMENTS_IPN_SECRET:-}
       - NOWPAYMENTS_SANDBOX=${NOWPAYMENTS_SANDBOX:-false}
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-https://ai-worker-as-a-service.prin7r.com}
-      - DATABASE_URL=postgres://shiftledger:shiftledger@postgres:5432/shiftledger
-      - APP_SERVER_URL=http://app:3001
+      - DATABASE_URL=postgres://shiftledger:shiftledger@144.91.94.91:5433/shiftledger
+      - APP_SERVER_URL=http://144.91.94.91:3001
       - NOTION_TOKEN=${NOTION_TOKEN:-}
     env_file:
       - .env
