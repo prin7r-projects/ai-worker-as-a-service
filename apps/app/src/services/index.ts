@@ -23,3 +23,14 @@ export { ZendeskService } from "./ZendeskService.js";
 export { PostmarkService } from "./PostmarkService.js";
 export type { OnboardingEmailArgs } from "./PostmarkService.js";
 export { NotionService } from "./NotionService.js";
+
+// Phase 4 services (PRI-2323)
+export { sendSlackAlert, trackWebhookSigFailure, checkStuckShifts, checkDrift, checkContractAnomaly } from "./SlackAlertService.js";
+export type { AlertPayload } from "./SlackAlertService.js";
+export { installPiiScrubbing, scrubLog as scrubPii } from "./PiiScrubber.js";
+export { startHeartbeat, stopHeartbeat } from "./HeartbeatService.js";
+
+// Phase 5 services (PRI-2322)
+export { DigestService } from "./DigestService.js";
+export { EvalRunnerService } from "./EvalRunnerService.js";
+export { startCronJobs, stopCronJobs } from "./CronScheduler.js";

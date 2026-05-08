@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Admin' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav-admin', { currentPage: 'dashboard' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Admin Dashboard</h1>
+          <p class="page-subtitle">Full ledger overview — contracts, shifts, revenue, disputes, partners</p>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
+        <div class="card stat-card">
+          <div class="stat-label">Contracts</div>
+          <div class="stat-value"><%= stats.totalContracts %></div>
+          <div class="stat-sub"><%= stats.activeContracts %> active</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Customers</div>
+          <div class="stat-value"><%= stats.totalCustomers %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Revenue (USD)</div>
+          <div class="stat-value">$<%= parseFloat(stats.totalRevenue).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Disputes</div>
+          <div class="stat-value <%= stats.disputedLines > 0 ? 'text-flag' : '' %>"><%= stats.disputedLines %></div>
+          <div class="stat-sub"><%= stats.stuckShifts %> stuck shifts</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Rev-Share Accrued</div>
+          <div class="stat-value">$<%= parseFloat(stats.revShareAccrued).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) %></div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label">Rev-Share Paid Out</div>
+          <div class="stat-value">$<%= parseFloat(stats.revSharePaidOut).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) %></div>
+          <div class="stat-sub">$<%= parseFloat(stats.revShareOutstanding).toLocaleString() %> outstanding</div>
+        </div>
+      </div>
+
+      <!-- Worker Profiles Drift Status -->
+      <h2 class="font-display text-xl tracking-tight text-ink mb-4">Worker Profile Health</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <% workerProfiles.forEach(function(p) {
+          const driftColor = p.driftStatus === 'green' ? 'text-payday' : (p.driftStatus === 'yellow' ? 'text-flag' : 'text-flag');
+          const driftBg = p.driftStatus === 'green' ? 'bg-payday' : (p.driftStatus === 'yellow' ? 'bg-flag' : 'bg-flag');
+          const driftLabel = p.driftStatus === 'green' ? 'GREEN' : (p.driftStatus === 'yellow' ? 'YELLOW' : 'RED');
+        %>
+          <div class="card p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-ink-2"><%= p.displayName %></span>
+              <span class="badge <%= p.driftStatus === 'green' ? 'badge-healthy' : (p.driftStatus === 'yellow' ? 'badge-degraded' : 'badge-cancelled') %>"><%= driftLabel %></span>
+            </div>
+            <div class="text-xs font-mono text-slate"><%= p.id %></div>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Recent Contracts -->
+      <h2 class="font-display text-xl tracking-tight text-ink mb-4">Recent Contracts</h2>
+      <% if (recentContracts.length === 0) { %>
+        <div class="card p-6 mb-8">
+          <p class="text-sm text-gravel">No contracts yet.</p>
+        </div>
+      <% } else { %>
+        <div class="card overflow-x-auto mb-8">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>Contract ID</th>
+                <th>Customer</th>
+                <th>Tier</th>
+                <th>Status</th>
+                <th class="hide-mobile">Outcomes</th>
+                <th class="text-right hide-mobile">Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentContracts.forEach(function(c) { %>
+                <tr>
+                  <td class="mono"><%= c.id.split('_').slice(-1)[0] %></td>
+                  <td class="text-sm"><%= c.customerEmail || '—' %></td>
+                  <td class="capitalize"><%= c.tier %></td>
+                  <td><%- renderStatusBadge(c.status) %></td>
+                  <td class="mono hide-mobile"><%= c.outcomeTarget %></td>
+                  <td class="mono text-right hide-mobile"><%= new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <a href="/admin/contracts" class="card p-4 no-underline hover:border-audit transition-colors">
+          <div class="text-sm font-medium text-ink">All Contracts →</div>
+          <div class="text-xs text-gravel mt-1">View and manage all contracts</div>
+        </a>
+        <a href="/admin/disputes" class="card p-4 no-underline hover:border-audit transition-colors">
+          <div class="text-sm font-medium text-ink">Disputes →</div>
+          <div class="text-xs text-gravel mt-1"><%= stats.disputedLines %> pending</div>
+        </a>
+        <a href="/admin/partners" class="card p-4 no-underline hover:border-audit transition-colors">
+          <div class="text-sm font-medium text-ink">Partner Payouts →</div>
+          <div class="text-xs text-gravel mt-1">Rev-share ledger</div>
+        </a>
+        <a href="/admin/shifts" class="card p-4 no-underline hover:border-audit transition-colors">
+          <div class="text-sm font-medium text-ink">All Shifts →</div>
+          <div class="text-xs text-gravel mt-1"><%= stats.stuckShifts %> stuck</div>
+        </a>
+        <a href="/api/internal/digest/run" class="card p-4 no-underline hover:border-audit transition-colors">
+          <div class="text-sm font-medium text-ink">Run Digest →</div>
+          <div class="text-xs text-gravel mt-1">Trigger weekly digest now (API)</div>
+        </a>
+        <a href="/api/internal/eval/run" class="card p-4 no-underline hover:border-audit transition-colors">
+          <div class="text-sm font-medium text-ink">Run Eval →</div>
+          <div class="text-xs text-gravel mt-1">Trigger nightly eval now (API)</div>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <%- include('../partials/footer-admin') %>
+</body>
+</html>

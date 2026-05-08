@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Admin — Partners' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav-admin', { currentPage: 'partners' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Partner Revenue Share</h1>
+          <p class="page-subtitle">Referral code rev-share ledger — 25% default share rate</p>
+        </div>
+      </div>
+
+      <% if (partners.length === 0) { %>
+        <div class="card p-8">
+          <div class="empty-state">
+            <div class="empty-state-icon">🤝</div>
+            <h2 class="empty-state-title">No partner referrals yet</h2>
+            <p class="empty-state-desc">Partner rev-share accrues when a contract is created with a referral code.</p>
+          </div>
+        </div>
+      <% } else { %>
+        <!-- Partner Summary Cards -->
+        <% partners.forEach(function(p) { %>
+          <div class="card p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="font-mono text-lg text-ink"><%= p.referralCode %></h3>
+                <p class="text-sm text-gravel"><%= p.contractCount %> contract<%= p.contractCount !== 1 ? 's' : '' %></p>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gravel">Outstanding</div>
+                <div class="font-mono text-lg font-medium text-ink">$<%= parseFloat(p.outstandingBalance).toLocaleString('en-US', { minimumFractionDigits: 2 }) %></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 mb-4">
+              <div class="card stat-card p-3">
+                <div class="stat-label">Total Accrued</div>
+                <div class="stat-value text-sm">$<%= parseFloat(p.totalAccrued).toLocaleString() %></div>
+              </div>
+              <div class="card stat-card p-3">
+                <div class="stat-label">Total Paid Out</div>
+                <div class="stat-value text-sm">$<%= parseFloat(p.totalPaidOut).toLocaleString() %></div>
+              </div>
+              <div class="card stat-card p-3">
+                <div class="stat-label">Pending Payout</div>
+                <div class="stat-value text-sm">$<%= parseFloat(p.outstandingBalance).toLocaleString() %></div>
+              </div>
+            </div>
+
+            <!-- Recent Contracts for this partner -->
+            <% if (p.rows.length > 0) { %>
+              <div class="overflow-x-auto">
+                <table class="table-ledger">
+                  <thead>
+                    <tr>
+                      <th>Contract ID</th>
+                      <th>Revenue</th>
+                      <th>Accrued</th>
+                      <th>Paid Out</th>
+                      <th>Status</th>
+                      <th class="text-right hide-mobile">Created</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% p.rows.forEach(function(r) { %>
+                      <tr>
+                        <td class="mono"><%= r.contractId.split('_').slice(-1)[0] %></td>
+                        <td class="mono">$<%= parseFloat(r.contractRevenueUsd || '0').toFixed(2) %></td>
+                        <td class="mono">$<%= parseFloat(r.accruedUsd || '0').toFixed(2) %></td>
+                        <td class="mono">$<%= parseFloat(r.paidOutUsd || '0').toFixed(2) %></td>
+                        <td><%- renderStatusBadge(r.status) %></td>
+                        <td class="mono text-right hide-mobile"><%= new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            <% } %>
+          </div>
+        <% }); %>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('../partials/footer-admin') %>
+</body>
+</html>

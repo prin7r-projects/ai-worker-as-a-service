@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Admin — Shifts' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav-admin', { currentPage: 'shifts' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">All Shifts</h1>
+          <p class="page-subtitle">Full shift history across all contracts — recent 200</p>
+        </div>
+      </div>
+
+      <% if (shifts.length === 0) { %>
+        <div class="card p-8">
+          <div class="empty-state">
+            <div class="empty-state-icon">🔄</div>
+            <h2 class="empty-state-title">No shifts yet</h2>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card overflow-x-auto">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>Shift ID</th>
+                <th>Contract</th>
+                <th>Tier</th>
+                <th>Profile</th>
+                <th>Status</th>
+                <th>Started</th>
+                <th>Attempted</th>
+                <th>Cleared</th>
+                <th>Voided</th>
+                <th class="hide-mobile">Clear Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% shifts.forEach(function(s) {
+                const clearRate = s.outcomesAttempted > 0
+                  ? ((s.outcomesCleared / s.outcomesAttempted) * 100).toFixed(1)
+                  : '0.0';
+              %>
+                <tr>
+                  <td class="mono"><%= s.id.slice(0, 8) %></td>
+                  <td class="mono"><%= (s.contractId || '').split('_').slice(-1)[0] %></td>
+                  <td class="capitalize"><%= s.contractTier || '—' %></td>
+                  <td class="text-sm"><%= s.workerProfileId %></td>
+                  <td><%- renderStatusBadge(s.status) %></td>
+                  <td class="mono"><%= s.startedAt ? new Date(s.startedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—' %></td>
+                  <td class="mono"><%= s.outcomesAttempted %></td>
+                  <td class="mono text-payday"><%= s.outcomesCleared %></td>
+                  <td class="mono text-flag"><%= s.outcomesVoided %></td>
+                  <td class="mono hide-mobile"><%= clearRate %>%</td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('../partials/footer-admin') %>
+</body>
+</html>

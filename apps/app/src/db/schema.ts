@@ -119,3 +119,62 @@ export const paymentEvents = pgTable(
     index("payment_events_contract_status_idx").on(table.contractId, table.paymentStatus),
   ],
 );
+
+// Phase 4: Idempotency keys for checkout dedup
+export const idempotencyKeys = pgTable(
+  "idempotency_keys",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    idemHash: text("idem_hash").notNull(),
+    idemKey: text("idem_key").notNull(),
+    responsePayload: jsonb("response_payload").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (table) => [
+    index("idem_hash_created_idx").on(table.idemHash, table.createdAt),
+  ],
+);
+
+// Phase 6: Partner branding for white-label receipts
+export const partnerBranding = pgTable(
+  "partner_branding",
+  {
+    referralCode: text("referral_code").primaryKey(),
+    logoDataUrl: text("logo_data_url"),       // base64 data URL (max ~100KB)
+    footerText: text("footer_text"),           // e.g. "Powered by Acme Consulting"
+    contactEmail: text("contact_email"),       // support contact for the partner
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  },
+);
+
+// Phase 6: Profile drift status change log for cohort analysis
+export const profileStatusLog = pgTable(
+  "profile_status_log",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workerProfileId: text("worker_profile_id").references(() => workerProfiles.id).notNull(),
+    oldStatus: text("old_status"),              // 'green' | 'yellow' | 'red' | null (initial)
+    newStatus: text("new_status").notNull(),     // 'green' | 'yellow' | 'red'
+    changedAt: timestamp("changed_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("profile_status_log_profile_idx").on(table.workerProfileId, table.changedAt),
+  ],
+);
+
+// Phase 6: Public changelog entries
+export const changelogEntries = pgTable(
+  "changelog_entries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    eventType: text("event_type").notNull(),     // 'profile_added' | 'drift_event' | 'payout' | 'system'
+    title: text("title").notNull(),
+    description: text("description"),
+    metadata: jsonb("metadata"),                 // optional structured data
+    publishedAt: timestamp("published_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("changelog_published_idx").on(table.publishedAt),
+  ],
+);

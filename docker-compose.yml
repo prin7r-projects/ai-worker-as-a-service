@@ -51,6 +51,11 @@ services:
       - DASHBOARD_URL=${DASHBOARD_URL:-https://ai-worker-as-a-service.prin7r.com/app}
       - APP_SERVER_URL=http://app:3001
       - NOTION_CONTRACTS_DSID=${NOTION_CONTRACTS_DSID:-}
+      # Phase 4: Observability (PRI-2323)
+      - SLACK_ALERT_WEBHOOK_URL=${SLACK_ALERT_WEBHOOK_URL:-}
+      - START_HEARTBEAT=${START_HEARTBEAT:-true}
+      # Phase 5: Cron jobs (PRI-2322)
+      - START_CRON_JOBS=${START_CRON_JOBS:-true}
     depends_on:
       - postgres
       - redis
@@ -62,6 +67,14 @@ services:
       - "traefik.http.routers.shiftledger-app.entrypoints=websecure"
       - "traefik.http.routers.shiftledger-app.tls.certresolver=letsencrypt"
       - "traefik.http.services.shiftledger-app.loadbalancer.server.port=3001"
+      # Phase 4: Rate limit /api/admin/* at 10 req/min/IP (Traefik middleware)
+      - "traefik.http.routers.shiftledger-app-admin.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/admin`)"
+      - "traefik.http.routers.shiftledger-app-admin.entrypoints=websecure"
+      - "traefik.http.routers.shiftledger-app-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-app-admin.middlewares=shiftledger-admin-ratelimit"
+      - "traefik.http.middlewares.shiftledger-admin-ratelimit.ratelimit.average=10"
+      - "traefik.http.middlewares.shiftledger-admin-ratelimit.ratelimit.period=1m"
+      - "traefik.http.middlewares.shiftledger-admin-ratelimit.ratelimit.burst=3"
 
   landing:
     build:
@@ -80,6 +93,8 @@ services:
       - DATABASE_URL=postgres://shiftledger:shiftledger@144.91.94.91:5433/shiftledger
       - APP_SERVER_URL=http://144.91.94.91:3001
       - NOTION_TOKEN=${NOTION_TOKEN:-}
+      # Phase 4: Slack alerts for webhook sig failures (PRI-2323 task 5)
+      - SLACK_ALERT_WEBHOOK_URL=${SLACK_ALERT_WEBHOOK_URL:-}
     env_file:
       - .env
     labels:
@@ -88,6 +103,23 @@ services:
       - "traefik.http.routers.ai-worker-as-a-service.entrypoints=websecure"
       - "traefik.http.routers.ai-worker-as-a-service.tls.certresolver=letsencrypt"
       - "traefik.http.services.ai-worker-as-a-service.loadbalancer.server.port=3000"
+      # Phase 4: Rate limits per docs/12 §7
+      # /api/checkout/*  30 req/min/IP
+      - "traefik.http.routers.shiftledger-checkout.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/checkout`)"
+      - "traefik.http.routers.shiftledger-checkout.entrypoints=websecure"
+      - "traefik.http.routers.shiftledger-checkout.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-checkout.middlewares=shiftledger-checkout-ratelimit"
+      - "traefik.http.middlewares.shiftledger-checkout-ratelimit.ratelimit.average=30"
+      - "traefik.http.middlewares.shiftledger-checkout-ratelimit.ratelimit.period=1m"
+      - "traefik.http.middlewares.shiftledger-checkout-ratelimit.ratelimit.burst=5"
+      # /api/webhooks/*  600 req/min total (not per-IP)
+      - "traefik.http.routers.shiftledger-webhooks.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/webhooks`)"
+      - "traefik.http.routers.shiftledger-webhooks.entrypoints=websecure"
+      - "traefik.http.routers.shiftledger-webhooks.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-webhooks.middlewares=shiftledger-webhook-ratelimit"
+      - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.average=600"
+      - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.period=1m"
+      - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.burst=100"
     networks:
       - shiftledger
 

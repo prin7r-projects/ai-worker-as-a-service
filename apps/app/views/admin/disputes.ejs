@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Admin — Disputes' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav-admin', { currentPage: 'disputes' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Disputed Receipt Lines</h1>
+          <p class="page-subtitle">All lines currently under dispute — review and resolve</p>
+        </div>
+      </div>
+
+      <% if (disputes.length === 0) { %>
+        <div class="card p-8">
+          <div class="empty-state">
+            <div class="empty-state-icon">✓</div>
+            <h2 class="empty-state-title">No disputes</h2>
+            <p class="empty-state-desc">All receipt lines are currently settled. Disputes appear here when customers flag a line for review.</p>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card overflow-x-auto">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>Line ID</th>
+                <th>External ID</th>
+                <th>Contract</th>
+                <th>Tier</th>
+                <th>Unit Price</th>
+                <th>Disputed At</th>
+                <th>Reason</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% disputes.forEach(function(d) {
+                const reason = (d.verificationDetails && d.verificationDetails.disputeReason)
+                  ? String(d.verificationDetails.disputeReason).slice(0, 80)
+                  : '—';
+              %>
+                <tr>
+                  <td class="mono"><%= d.id.slice(0, 8) %></td>
+                  <td class="mono"><%= d.externalId %></td>
+                  <td class="mono"><%= (d.contractId || '').split('_').slice(-1)[0] %></td>
+                  <td class="capitalize"><%= d.contractTier || '—' %></td>
+                  <td class="mono">$<%= parseFloat(d.unitPriceUsd || '0').toFixed(2) %></td>
+                  <td class="mono"><%= d.disputedAt ? new Date(d.disputedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—' %></td>
+                  <td class="text-sm text-gravel"><%= reason %><%= reason.length >= 80 ? '…' : '' %></td>
+                  <td class="text-right">
+                    <button
+                      class="btn btn-sm btn-danger"
+                      onclick="if(confirm('Void this disputed line?')) resolveDispute('<%= d.id %>', 'void')"
+                    >Void</button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('../partials/footer-admin') %>
+</body>
+</html>

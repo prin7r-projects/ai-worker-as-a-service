@@ -1,0 +1,18 @@
+<nav class="border-b border-chalk bg-card-white sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-14">
+      <a href="/admin" class="flex items-center gap-2 no-underline">
+        <span class="font-display text-2xl tracking-tight text-obsidian">Shiftledger</span>
+        <span class="font-mono text-[0.625rem] uppercase tracking-widest text-flag mt-1">Admin</span>
+      </a>
+      <div class="flex items-center gap-1">
+        <a href="/admin" class="nav-link<%= currentPage === 'dashboard' ? ' active' : '' %>">Overview</a>
+        <a href="/admin/contracts" class="nav-link<%= currentPage === 'contracts' ? ' active' : '' %>">Contracts</a>
+        <a href="/admin/shifts" class="nav-link<%= currentPage === 'shifts' ? ' active' : '' %>">Shifts</a>
+        <a href="/admin/disputes" class="nav-link<%= currentPage === 'disputes' ? ' active' : '' %>">Disputes</a>
+        <a href="/admin/partners" class="nav-link<%= currentPage === 'partners' ? ' active' : '' %>">Partners</a>
+        <a href="/app/contracts" class="nav-link">← App</a>
+      </div>
+    </div>
+  </div>
+</nav>

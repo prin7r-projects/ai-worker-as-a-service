@@ -2,6 +2,7 @@
  * [SHIFTLEDGER_NOWPAYMENTS_CHECKOUT] POST /api/checkout/nowpayments
  *
  * Phase 3: Persists contracts in DB before creating the NOWPayments invoice.
+ * Phase 4: Idempotency middleware — same (email, workerProfile, tier, hour) returns existing invoice.
  *
  * Body: {
  *   plan: "trial" | "standard" | "enterprise",
@@ -14,11 +15,12 @@
  * Returns: { invoice_url, invoice_id, contractId, plan, deposit_usd } on success.
  *
  * Flow:
+ *   0. Idempotency check — same (email, workerProfile, tier, hour) → return cached
  *   1. Validate plan + worker profile
  *   2. Upsert customer (by email)
  *   3. Create contract (pending) in DB with order_id = contractId
  *   4. Create NOWPayments invoice with same order_id
- *   5. Return checkout URL
+ *   5. Cache result and return checkout URL
  *
  * Errors:
  *   HTTP 400  for unknown plan ids / missing fields
@@ -32,8 +34,8 @@ import { MissingEnvError, appUrlFromRequest } from "@/lib/env";
 import { PLANS, createNowpaymentsInvoice, isPlanId } from "@/lib/nowpayments";
 import type { PlanId } from "@/lib/nowpayments";
 import { db, schema } from "@/lib/db";
-import { eq } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
+import { eq, and, gte } from "drizzle-orm";
+import crypto from "node:crypto";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -93,6 +95,44 @@ export async function POST(request: Request) {
   const plan = PLANS[planId];
   const baseUrl = appUrlFromRequest(request);
   const tierConfig = TIER_OUTCOMES[planId];
+
+  // ── Phase 4: Idempotency check ──────────────────────────────────────────
+  // Key: (customerEmail, workerProfile, tier, hour).
+  // Duplicate checkout within the same hour returns the existing invoice.
+  const normalizedEmail = email.toLowerCase().trim();
+  const hourBucket = Math.floor(Date.now() / 3_600_000); // current hour as integer
+  const idemKey = `${normalizedEmail}|${workerProfileId}|${planId}|${hourBucket}`;
+  const idemHash = crypto.createHash("sha256").update(idemKey).digest("hex");
+
+  try {
+    const now = new Date();
+    const hourAgo = new Date(now.getTime() - 3_600_000);
+
+    const [existingIdem] = await db
+      .select()
+      .from(schema.idempotencyKeys)
+      .where(
+        and(
+          eq(schema.idempotencyKeys.idemHash, idemHash),
+          gte(schema.idempotencyKeys.createdAt, hourAgo),
+        ),
+      )
+      .limit(1);
+
+    if (existingIdem) {
+      console.log(
+        `[CHECKOUT] idempotent_replay hash=${idemHash.slice(0,12)} email=${normalizedEmail} plan=${planId}`,
+      );
+      return NextResponse.json(existingIdem.responsePayload as Record<string, unknown>, {
+        status: 200,
+        headers: { "X-Idempotent-Replay": "true" },
+      });
+    }
+  } catch {
+    // Idempotency check is a best-effort guard; DB failure should not block checkout.
+    console.warn("[CHECKOUT] idempotency_check_db_error — proceeding without idempotency guard");
+  }
+  // ─────────────────────────────────────────────────────────────────────────
 
   try {
     // 1. Look up worker profile
@@ -186,14 +226,29 @@ export async function POST(request: Request) {
       `[CHECKOUT] invoice_created invoice_id=${invoice.id} contractId=${contractId}`,
     );
 
-    return NextResponse.json({
+    const responsePayload = {
       mode: "live",
       plan: plan.id,
       deposit_usd: plan.depositUsd,
       invoice_id: invoice.id,
       invoice_url: invoice.invoice_url,
       contractId,
-    });
+    };
+
+    // Phase 4: Cache the idempotency key so repeat requests return same invoice
+    try {
+      await db.insert(schema.idempotencyKeys).values({
+        idemHash,
+        idemKey,
+        responsePayload: responsePayload as unknown as Record<string, unknown>,
+      });
+      console.log(`[CHECKOUT] idempotency_cached hash=${idemHash.slice(0,12)}`);
+    } catch (cacheErr) {
+      // Non-fatal: if the cache fails, checkout still succeeds.
+      console.warn(`[CHECKOUT] idempotency_cache_failed: ${(cacheErr as Error).message}`);
+    }
+
+    return NextResponse.json(responsePayload);
   } catch (error) {
     if (error instanceof MissingEnvError) {
       return NextResponse.json(

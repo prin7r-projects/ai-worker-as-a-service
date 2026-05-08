@@ -53,6 +53,21 @@ export const paymentEvents = pgTable(
   ],
 );
 
+// Phase 4: Idempotency keys for checkout dedup
+export const idempotencyKeys = pgTable(
+  "idempotency_keys",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    idemHash: text("idem_hash").notNull(),
+    idemKey: text("idem_key").notNull(),
+    responsePayload: jsonb("response_payload").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (table) => [
+    index("idem_hash_created_idx").on(table.idemHash, table.createdAt),
+  ],
+);
+
 // Phase 3: Partner referral rev-share ledger
 export const revShareLedger = pgTable(
   "rev_share_ledger",

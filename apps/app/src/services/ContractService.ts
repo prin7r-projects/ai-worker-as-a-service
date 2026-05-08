@@ -94,4 +94,23 @@ export class ContractService {
 
     return rows[0] ?? null;
   }
+
+  /**
+   * Phase 4: Pause a contract — marks status 'paused'.
+   * Used by the heartbeat service when integration tokens expire.
+   */
+  static async pause(contractId: string) {
+    await db
+      .update(schema.contracts)
+      .set({ status: "paused" })
+      .where(eq(schema.contracts.id, contractId));
+
+    const rows = await db
+      .select()
+      .from(schema.contracts)
+      .where(eq(schema.contracts.id, contractId))
+      .limit(1);
+
+    return rows[0] ?? null;
+  }
 }

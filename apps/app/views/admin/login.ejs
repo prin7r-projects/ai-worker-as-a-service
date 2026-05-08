@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Admin Login' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex items-center justify-center">
+  <div class="card p-8 w-full max-w-md mx-4">
+    <div class="text-center mb-6">
+      <span class="font-display text-3xl tracking-tight text-obsidian">Shiftledger</span>
+      <p class="text-sm text-gravel mt-2 font-mono uppercase tracking-widest">Admin Console</p>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error mb-4"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/admin/login">
+      <div class="form-group mb-4">
+        <label for="token" class="form-label">Admin Token</label>
+        <input
+          type="password"
+          id="token"
+          name="token"
+          class="form-input token-input"
+          placeholder="Enter your admin API key"
+          required
+          autofocus
+        />
+        <p class="form-hint">Authenticate with your ADMIN_API_KEY to access the admin dashboard.</p>
+      </div>
+      <button type="submit" class="btn btn-primary w-full">Sign In</button>
+    </form>
+
+    <div class="mt-6 pt-6 border-t border-chalk text-center">
+      <a href="/app/contracts" class="text-sm text-audit no-underline hover:underline">← Back to Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

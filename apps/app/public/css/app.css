@@ -710,3 +710,35 @@ input[type="range"].range-slider::-moz-range-thumb {
   .page-title { font-size: 1.25rem; }
   .stat-value { font-size: 1.25rem; }
 }
+
+/* ===== Phase 5: Drift-watch banner ===== */
+.drift-banner {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.drift-banner-yellow {
+  background: #FFF8E5;
+  color: #8B6914;
+  border: 1px solid #F5D878;
+}
+.drift-banner-red {
+  background: #FDF0ED;
+  color: var(--flag);
+  border: 1px solid #F5C6BD;
+}
+
+/* ===== Phase 5: Admin login form ===== */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

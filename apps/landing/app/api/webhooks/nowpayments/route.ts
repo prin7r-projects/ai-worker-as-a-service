@@ -29,7 +29,7 @@
 import { NextResponse } from "next/server";
 import { optionalEnv } from "@/lib/env";
 import { verifyNowpaymentsIpn } from "@/lib/nowpayments";
-import { db, schema } from "@/lib/db";
+import { db, schema, sql } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 
 export const runtime = "nodejs";
@@ -62,6 +62,11 @@ export async function POST(request: Request) {
   const signature = request.headers.get("x-nowpayments-sig");
   const verified = verifyNowpaymentsIpn(payload, signature, secret);
   if (!verified) {
+    // Phase 4: Track webhook sig failure for rate-bucketed Slack alerting
+    console.log(
+      `[SHIFTLEDGER_NOWPAYMENTS_IPN] signature_invalid order_id=${stringValue(payload.order_id) ?? "unknown"}`,
+    );
+    await trackSigFailure();
     return NextResponse.json({ error: "signature_invalid" }, { status: 401 });
   }
 
@@ -224,4 +229,91 @@ export async function POST(request: Request) {
 function stringValue(value: unknown): string | undefined {
   if (typeof value === "string" || typeof value === "number") return String(value);
   return undefined;
+}
+
+// Phase 4: Track webhook signature failures for Slack alerting (PRI-2323 task 5)
+// Uses the DB to persist counters that the app server's heartbeat monitor reads.
+async function trackSigFailure(): Promise<void> {
+  try {
+    const hourBucket = Math.floor(Date.now() / 3_600_000);
+    const key = `webhook_sig_failure:${hourBucket}`;
+
+    // Use a lightweight upsert via raw SQL to avoid schema changes
+    // We store simple counters keyed by hour bucket
+    await sql.unsafe(
+      `INSERT INTO idempotency_keys (id, idem_hash, idem_key, response_payload, created_at)
+       VALUES (gen_random_uuid(), '${key}', '${key}', '${JSON.stringify({ count: 1 })}', NOW())
+       ON CONFLICT DO NOTHING`,
+    );
+
+    // Count failures in the current hour
+    const countResult = await sql.unsafe(
+      `SELECT COUNT(*) as count FROM idempotency_keys
+       WHERE idem_hash = '${key}' AND created_at > NOW() - INTERVAL '1 hour'`,
+    );
+    const count = parseInt(String((countResult as any)?.[0]?.count ?? 0), 10);
+
+    // Fire Slack webhook on threshold crossings
+    if (count === 6) {
+      await sendSlackSigAlert("warning", count);
+    } else if (count === 20) {
+      await sendSlackSigAlert("critical", count);
+    }
+  } catch {
+    // Non-fatal: sig failure tracking should never block the webhook response
+  }
+}
+
+async function sendSlackSigAlert(level: string, count: number): Promise<void> {
+  const webhookUrl = process.env.SLACK_ALERT_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  try {
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        attachments: [
+          {
+            color: level === "critical" ? "#B5371F" : "#B5371F",
+            blocks: [
+              {
+                type: "header",
+                text: {
+                  type: "plain_text",
+                  text: level === "critical"
+                    ? "🚨 CRITICAL: Sustained webhook signature failures"
+                    : "⚠️  Webhook signature failures exceeding threshold",
+                },
+              },
+              {
+                type: "section",
+                fields: [
+                  { type: "mrkdwn", text: `*Failures in last hour*\n${count}` },
+                  {
+                    type: "mrkdwn",
+                    text: level === "critical"
+                      ? "*Action*\nVerify NOWPAYMENTS_IPN_SECRET immediately. Possible active forgery."
+                      : "*Action*\nCheck NOWPayments IPN health and IPN secret.",
+                  },
+                ],
+              },
+              {
+                type: "context",
+                elements: [
+                  {
+                    type: "mrkdwn",
+                    text: "Shiftledger Phase 4 · Webhook forgery detection · POST /api/webhooks/nowpayments",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
+      signal: AbortSignal.timeout(5_000),
+    });
+  } catch {
+    // Fire-and-forget
+  }
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Admin — Contracts' }) %></head>
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+  <%- include('../partials/nav-admin', { currentPage: 'contracts' }) %>
+
+  <main class="flex-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">All Contracts</h1>
+          <p class="page-subtitle">Admin view — all contracts with customer emails and refund controls</p>
+        </div>
+      </div>
+
+      <% if (contracts.length === 0) { %>
+        <div class="card p-8">
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h2 class="empty-state-title">No contracts yet</h2>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card overflow-x-auto">
+          <table class="table-ledger">
+            <thead>
+              <tr>
+                <th>Contract ID</th>
+                <th>Customer</th>
+                <th>Profile</th>
+                <th>Tier</th>
+                <th>Status</th>
+                <th>Outcomes</th>
+                <th class="hide-mobile">Budget</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% contracts.forEach(function(c) { %>
+                <tr>
+                  <td class="mono text-audit"><%= c.id.split('_').slice(-1)[0] %></td>
+                  <td class="text-sm"><%= c.customerEmail || '—' %></td>
+                  <td class="font-medium"><%= c.workerProfileName %></td>
+                  <td class="capitalize"><%= c.tier %></td>
+                  <td><%- renderStatusBadge(c.status) %></td>
+                  <td class="mono"><%= c.outcomeTarget %></td>
+                  <td class="mono hide-mobile"><%= c.budgetCapUsd ? '$' + parseFloat(c.budgetCapUsd).toLocaleString() : '—' %></td>
+                  <td class="text-right">
+                    <% if (c.status === 'active' || c.status === 'pending') { %>
+                      <button
+                        class="btn btn-sm btn-danger"
+                        onclick="if(confirm('Refund and cancel contract <%= c.id.split('_').slice(-1)[0] %>? This will void all unprocessed lines.')) refundContract('<%= c.id %>')"
+                      >Refund</button>
+                    <% } else { %>
+                      <span class="text-xs text-slate">—</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('../partials/footer-admin') %>
+  <script>
+    async function refundContract(contractId) {
+      try {
+        const res = await fetch('/api/admin/contracts/' + contractId + '/refund', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getAdminToken() },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('Contract refunded: ' + data.message);
+          location.reload();
+        } else {
+          alert('Refund failed: ' + (data.error?.message || 'Unknown error'));
+        }
+      } catch (err) {
+        alert('Network error: ' + err.message);
+      }
+    }
+    function getAdminToken() {
+      const match = document.cookie.match(/(?:^|;)s*admin_token=([^;]*)/);
+      return match ? match[1] : '';
+    }
+  </script>
+</body>
+</html>

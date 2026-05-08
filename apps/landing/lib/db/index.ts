@@ -7,4 +7,5 @@ const DATABASE_URL = process.env.DATABASE_URL ?? "postgres://shiftledger:shiftle
 
 const client = postgres(DATABASE_URL);
 export const db = drizzle(client, { schema });
+export const sql = client; // raw postgres client for .execute()
 export { schema };

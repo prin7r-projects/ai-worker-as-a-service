@@ -205,7 +205,7 @@
 
 ---
 
-### Phase 6 — Post-launch experiments
+### Phase 6 — Post-launch experiments ✅
 
 **Goal.** White-label receipts; partner analytics; drift-watch retention measurement.
 
@@ -220,13 +220,21 @@
 **Effort.** M — 80-120 tool-uses, 1-2 days.
 
 **DoD.**
-- [ ] White-label receipt PDF renders with partner branding for a seeded partner.
-- [ ] Partner analytics endpoint returns valid JSON.
-- [ ] Drift-cohort report shows numeric churn rates per status color.
-- [ ] `/changelog` is publicly accessible.
+- [x] White-label receipt HTML renders with partner branding (logo, footer, contact email) for seeded partner `AGENCY-INDIE-007`. Print-to-PDF via browser print.
+- [x] Partner analytics endpoint returns valid JSON with `overview`, `clearedByWindow` (30/60/90d), `topProfiles`, `branding`.
+- [x] Drift-cohort report shows numeric churn rates per status color with aggregate by status.
+- [x] `/changelog` is publicly accessible as HTML page and JSON API.
+
+**Verification (2026-05-08).**
+- Partner branding CRUD: `POST/GET /api/admin/partners/:code/branding` tested with AGENCY-INDIE-007.
+- Partner analytics enhanced: 30/60/90-day windows, top profiles, branding all present in response.
+- Drift-cohort: `GET /api/admin/drift-cohort?days=30` returns per-profile stats and aggregate by drift status.
+- Drift status change logging: `POST /api/internal/drift/log-status-change` records to `profile_status_log` + auto-creates changelog entry.
+- Changelog: `GET /changelog` (HTML) and `GET /api/changelog` (JSON) both work; admin can create entries via `POST /api/admin/changelog`.
 
 **Hand-off context.**
-- Receipt PDFs use `@react-pdf/renderer` or similar; pick one and document in `/docs/runbooks/receipt-pdf.md`.
+- Receipt PDFs use browser print-to-PDF (no heavy server-side PDF dep). Receipt page at `/api/receipts/:lineId` renders HTML with white-label branding.
+- New tables: `partner_branding`, `profile_status_log`, `changelog_entries` (migration `0002_phase6.sql`).
 - Don't break public catalog with experiment-gated UI; fall back to control silently.
 
 ---

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog — Shiftledger</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1a1a2e;
+      background: #f8f9fa;
+      line-height: 1.6;
+    }
+    .changelog-container {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .changelog-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .changelog-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .changelog-header p {
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .changelog-date-group {
+      margin-bottom: 32px;
+    }
+    .changelog-date-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .changelog-entry {
+      display: flex;
+      gap: 16px;
+      padding: 16px 20px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      transition: box-shadow 0.15s;
+    }
+    .changelog-entry:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .changelog-entry-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    .changelog-entry-body {
+      flex: 1;
+    }
+    .changelog-entry-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .changelog-entry-desc {
+      font-size: 14px;
+      color: #64748b;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .changelog-entry-time {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 6px;
+      font-family: 'SF Mono', monospace;
+    }
+    .changelog-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #94a3b8;
+    }
+    .changelog-empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .changelog-footer {
+      text-align: center;
+      padding: 40px 0;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+    .changelog-footer a {
+      color: #667eea;
+      text-decoration: none;
+    }
+    .changelog-footer a:hover {
+      text-decoration: underline;
+    }
+    .badge-event {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .badge-profile_added { background: #dcfce7; color: #166534; }
+    .badge-drift_event { background: #fef3c7; color: #92400e; }
+    .badge-payout { background: #dbeafe; color: #1e40af; }
+    .badge-system { background: #f1f5f9; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="changelog-container">
+    <div class="changelog-header">
+      <h1>Shiftledger Changelog</h1>
+      <p>What's new — last 30 days of profile additions, drift events, and partner payouts.</p>
+    </div>
+
+    <% if (entries.length === 0) { %>
+      <div class="changelog-empty">
+        <div class="changelog-empty-icon">📋</div>
+        <p>No changelog entries yet.</p>
+        <p style="margin-top:8px">Events will appear here as profiles are added, drift statuses change, and partner payouts are processed.</p>
+      </div>
+    <% } %>
+
+    <% const dateKeys = Object.keys(grouped).sort().reverse(); %>
+    <% for (const dateKey of dateKeys) { %>
+      <div class="changelog-date-group">
+        <div class="changelog-date-label">
+          <%= typeof formatDate === 'function' ? formatDate(dateKey) : dateKey %>
+        </div>
+        <% for (const entry of (grouped[dateKey] || [])) { %>
+          <div class="changelog-entry">
+            <div class="changelog-entry-icon">
+              <%= typeof formatEventIcon === 'function' ? formatEventIcon(entry.eventType) : '📌' %>
+            </div>
+            <div class="changelog-entry-body">
+              <div class="changelog-entry-title">
+                <%= entry.title %>
+                <span class="badge-event badge-<%= entry.eventType %>"><%= entry.eventType.replace('_', ' ') %></span>
+              </div>
+              <% if (entry.description) { %>
+                <div class="changelog-entry-desc"><%= entry.description %></div>
+              <% } %>
+              <div class="changelog-entry-time">
+                <%= entry.publishedAt ? new Date(entry.publishedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '' %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+
+    <div class="changelog-footer">
+      <p>Shiftledger — AI Worker Fleet Platform</p>
+      <p><a href="/">Back to home</a></p>
+    </div>
+  </div>
+</body>
+</html>
