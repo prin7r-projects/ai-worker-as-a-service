@@ -58,7 +58,7 @@ services:
       # /api/admin/* — rate-limited admin endpoints (priority 12, more specific than /api)
       - "traefik.http.routers.shiftledger-admin.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/admin`)"
       - "traefik.http.routers.shiftledger-admin.entrypoints=websecure"
-      - "traefik.http.routers.shiftledger-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-admin.tls=true"
       - "traefik.http.routers.shiftledger-admin.priority=12"
       - "traefik.http.routers.shiftledger-admin.middlewares=shiftledger-admin-ratelimit"
       - "traefik.http.routers.shiftledger-admin.service=shiftledger-admin"
@@ -70,14 +70,14 @@ services:
       # /api/* — all other API routes (priority 10)
       - "traefik.http.routers.shiftledger-api.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api`)"
       - "traefik.http.routers.shiftledger-api.entrypoints=websecure"
-      - "traefik.http.routers.shiftledger-api.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-api.tls=true"
       - "traefik.http.routers.shiftledger-api.priority=10"
       - "traefik.http.routers.shiftledger-api.service=shiftledger-api"
       - "traefik.http.services.shiftledger-api.loadbalancer.server.port=3001"
       # /app/* — dashboard UI (priority 10)
       - "traefik.http.routers.shiftledger-app-ui.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/app`)"
       - "traefik.http.routers.shiftledger-app-ui.entrypoints=websecure"
-      - "traefik.http.routers.shiftledger-app-ui.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-app-ui.tls=true"
       - "traefik.http.routers.shiftledger-app-ui.priority=10"
       - "traefik.http.routers.shiftledger-app-ui.service=shiftledger-app-ui"
       - "traefik.http.services.shiftledger-app-ui.loadbalancer.server.port=3001"
@@ -105,7 +105,7 @@ services:
       # /api/checkout/* — rate-limited checkout (priority 15, most specific)
       - "traefik.http.routers.shiftledger-checkout.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/checkout`)"
       - "traefik.http.routers.shiftledger-checkout.entrypoints=websecure"
-      - "traefik.http.routers.shiftledger-checkout.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-checkout.tls=true"
       - "traefik.http.routers.shiftledger-checkout.priority=15"
       - "traefik.http.routers.shiftledger-checkout.middlewares=shiftledger-checkout-ratelimit"
       - "traefik.http.routers.shiftledger-checkout.service=shiftledger-checkout"
@@ -117,7 +117,7 @@ services:
       # /api/webhooks/* — rate-limited webhooks (priority 15)
       - "traefik.http.routers.shiftledger-webhooks.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/api/webhooks`)"
       - "traefik.http.routers.shiftledger-webhooks.entrypoints=websecure"
-      - "traefik.http.routers.shiftledger-webhooks.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-webhooks.tls=true"
       - "traefik.http.routers.shiftledger-webhooks.priority=15"
       - "traefik.http.routers.shiftledger-webhooks.middlewares=shiftledger-webhook-ratelimit"
       - "traefik.http.routers.shiftledger-webhooks.service=shiftledger-webhooks"
@@ -129,7 +129,7 @@ services:
       # Catch-all: everything else on the domain (priority 1)
       - "traefik.http.routers.shiftledger-landing.rule=Host(`ai-worker-as-a-service.prin7r.com`)"
       - "traefik.http.routers.shiftledger-landing.entrypoints=websecure"
-      - "traefik.http.routers.shiftledger-landing.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.shiftledger-landing.tls=true"
       - "traefik.http.routers.shiftledger-landing.priority=1"
       - "traefik.http.routers.shiftledger-landing.service=shiftledger-landing"
       - "traefik.http.services.shiftledger-landing.loadbalancer.server.port=3000"
