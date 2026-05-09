@@ -17,6 +17,7 @@ COPY apps/app/src apps/app/src
 COPY apps/app/views apps/app/views
 COPY apps/app/public apps/app/public
 COPY apps/app/migrations apps/app/migrations
+COPY data data
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile --filter shiftledger-app --ignore-scripts
