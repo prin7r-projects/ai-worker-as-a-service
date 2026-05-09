@@ -265,6 +265,23 @@
 
 ---
 
+## 5. Deploy (Phase 5/6 Live)
+
+**Goal.** All services deployed and publicly accessible on `https://ai-worker-as-a-service.prin7r.com`.
+
+**Status (2026-05-09).**
+
+- [x] **Docker Compose** — services defined: postgres, redis, app (Express), landing (Next.js). No explicit networks (follows lead-enrichment pattern). `env_file: .env` on both app and landing.
+- [x] **Traefik routing** — priority-based: `/api/checkout`+`/api/webhooks` → landing (pri 15), `/api/admin` → app with rate limit (pri 12), `/api`+`/app` → app (pri 10), catch-all → landing (pri 1).
+- [x] **Build** — `Dockerfile.landing` (multi-stage Next.js standalone) and `Dockerfile.app` (tsx Express runner) both build clean with pnpm@9.15.4.
+- [x] **DB** — PostgreSQL 16, migrations applied, seed data loaded (4 worker profiles).
+- [x] **API verified** — All docs/12 endpoints responding correctly (health, contracts, workers, integrations, admin).
+- [ ] **DNS** — ⚠️ `ai-worker-as-a-service.prin7r.com` currently resolves to `161.97.99.120` (old server). Must be updated to `144.91.94.91` (Prin7r VPS). All services verified working via direct IP.
+- [ ] **E2E suite** — Vitest tests in `apps/app/src/__tests__/` and `apps/landing/__tests__/` to be run against live domain after DNS cutover.
+- [ ] **Screenshots** — Desktop + mobile of `/app` dashboard to be committed to `screenshots/` after DNS cutover.
+
+**Deploy location.** `/opt/prin7r-deploys/ai-worker-as-a-service` on `root@144.91.94.91`.
+
 ## 4. References
 
 - Doc 11 — `/docs/11-user-stories-and-scenarios.md` — drives Phase 1-3 endpoints + Phase 5 ops flows.
