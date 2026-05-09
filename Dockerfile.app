@@ -12,10 +12,11 @@ RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 
 # Copy app source and config
-COPY apps/app/package.json apps/app/tsconfig.json apps/app/
+COPY apps/app/package.json apps/app/tsconfig.json apps/app/drizzle.config.json apps/app/
 COPY apps/app/src apps/app/src
 COPY apps/app/views apps/app/views
 COPY apps/app/public apps/app/public
+COPY apps/app/migrations apps/app/migrations
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile --filter shiftledger-app --ignore-scripts
