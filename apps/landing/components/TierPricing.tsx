@@ -14,10 +14,10 @@ import { useState, type FormEvent } from "react";
  */
 
 const WORKER_PROFILES = [
-  { id: "cs-shift", label: "CS Shift — Customer support ticket resolution" },
-  { id: "sdr-shift", label: "SDR Shift — Lead qualification & outreach" },
-  { id: "research-shift", label: "Research Shift — Market & competitive research" },
-  { id: "content-shift", label: "Content Shift — Writing & editorial outcomes" },
+  { id: "cs-shift", label: "CS Shift — Support" },
+  { id: "sdr-shift", label: "SDR Shift — Leads" },
+  { id: "research-shift", label: "Research Shift — Markets" },
+  { id: "content-shift", label: "Content Shift — Writing" },
 ] as const;
 
 type PlanId = "trial" | "standard" | "enterprise";
