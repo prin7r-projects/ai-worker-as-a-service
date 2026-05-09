@@ -81,6 +81,20 @@ services:
       - "traefik.http.routers.shiftledger-app-ui.priority=10"
       - "traefik.http.routers.shiftledger-app-ui.service=shiftledger-app-ui"
       - "traefik.http.services.shiftledger-app-ui.loadbalancer.server.port=3001"
+      # /admin and /admin/* — admin dashboard pages (priority 12, matches before /api/admin)
+      - "traefik.http.routers.shiftledger-admin-pages.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/admin`)"
+      - "traefik.http.routers.shiftledger-admin-pages.entrypoints=websecure"
+      - "traefik.http.routers.shiftledger-admin-pages.tls=true"
+      - "traefik.http.routers.shiftledger-admin-pages.priority=12"
+      - "traefik.http.routers.shiftledger-admin-pages.service=shiftledger-admin-pages"
+      - "traefik.http.services.shiftledger-admin-pages.loadbalancer.server.port=3001"
+      # /changelog — public changelog page (priority 10)
+      - "traefik.http.routers.shiftledger-changelog.rule=Host(`ai-worker-as-a-service.prin7r.com`) && Path(`/changelog`)"
+      - "traefik.http.routers.shiftledger-changelog.entrypoints=websecure"
+      - "traefik.http.routers.shiftledger-changelog.tls=true"
+      - "traefik.http.routers.shiftledger-changelog.priority=10"
+      - "traefik.http.routers.shiftledger-changelog.service=shiftledger-changelog"
+      - "traefik.http.services.shiftledger-changelog.loadbalancer.server.port=3001"
 
   # --- Landing (Next.js: marketing site + checkout/webhook routes) ---
   landing:
@@ -126,8 +140,8 @@ services:
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.average=600"
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.period=1m"
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.burst=100"
-      # Catch-all: everything else on the domain (priority 1) — exclude /app and /api which go to Express
-      - "traefik.http.routers.shiftledger-landing.rule=Host(`ai-worker-as-a-service.prin7r.com`) && !PathPrefix(`/app`) && !PathPrefix(`/api`)"
+      # Catch-all: everything else on the domain (priority 1) — exclude /app, /api, /admin, /changelog which go to Express
+      - "traefik.http.routers.shiftledger-landing.rule=Host(`ai-worker-as-a-service.prin7r.com`) && !PathPrefix(`/app`) && !PathPrefix(`/api`) && !PathPrefix(`/admin`) && !Path(`/changelog`)"
       - "traefik.http.routers.shiftledger-landing.entrypoints=websecure"
       - "traefik.http.routers.shiftledger-landing.tls=true"
       - "traefik.http.routers.shiftledger-landing.priority=1"
