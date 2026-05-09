@@ -61,6 +61,7 @@ services:
       - "traefik.http.routers.shiftledger-admin.tls.certresolver=letsencrypt"
       - "traefik.http.routers.shiftledger-admin.priority=12"
       - "traefik.http.routers.shiftledger-admin.middlewares=shiftledger-admin-ratelimit"
+      - "traefik.http.routers.shiftledger-admin.service=shiftledger-admin"
       - "traefik.http.services.shiftledger-admin.loadbalancer.server.port=3001"
       # Admin rate limit: 10 req/min/IP, burst 3
       - "traefik.http.middlewares.shiftledger-admin-ratelimit.ratelimit.average=10"
@@ -71,12 +72,14 @@ services:
       - "traefik.http.routers.shiftledger-api.entrypoints=websecure"
       - "traefik.http.routers.shiftledger-api.tls.certresolver=letsencrypt"
       - "traefik.http.routers.shiftledger-api.priority=10"
+      - "traefik.http.routers.shiftledger-api.service=shiftledger-api"
       - "traefik.http.services.shiftledger-api.loadbalancer.server.port=3001"
       # /app/* — dashboard UI (priority 10)
       - "traefik.http.routers.shiftledger-app-ui.rule=Host(`ai-worker-as-a-service.prin7r.com`) && PathPrefix(`/app`)"
       - "traefik.http.routers.shiftledger-app-ui.entrypoints=websecure"
       - "traefik.http.routers.shiftledger-app-ui.tls.certresolver=letsencrypt"
       - "traefik.http.routers.shiftledger-app-ui.priority=10"
+      - "traefik.http.routers.shiftledger-app-ui.service=shiftledger-app-ui"
       - "traefik.http.services.shiftledger-app-ui.loadbalancer.server.port=3001"
 
   # --- Landing (Next.js: marketing site + checkout/webhook routes) ---
@@ -105,6 +108,7 @@ services:
       - "traefik.http.routers.shiftledger-checkout.tls.certresolver=letsencrypt"
       - "traefik.http.routers.shiftledger-checkout.priority=15"
       - "traefik.http.routers.shiftledger-checkout.middlewares=shiftledger-checkout-ratelimit"
+      - "traefik.http.routers.shiftledger-checkout.service=shiftledger-checkout"
       - "traefik.http.services.shiftledger-checkout.loadbalancer.server.port=3000"
       # Checkout rate limit: 30 req/min/IP, burst 5
       - "traefik.http.middlewares.shiftledger-checkout-ratelimit.ratelimit.average=30"
@@ -116,6 +120,7 @@ services:
       - "traefik.http.routers.shiftledger-webhooks.tls.certresolver=letsencrypt"
       - "traefik.http.routers.shiftledger-webhooks.priority=15"
       - "traefik.http.routers.shiftledger-webhooks.middlewares=shiftledger-webhook-ratelimit"
+      - "traefik.http.routers.shiftledger-webhooks.service=shiftledger-webhooks"
       - "traefik.http.services.shiftledger-webhooks.loadbalancer.server.port=3000"
       # Webhook rate limit: 600 req/min total, burst 100
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.average=600"
@@ -126,6 +131,7 @@ services:
       - "traefik.http.routers.shiftledger-landing.entrypoints=websecure"
       - "traefik.http.routers.shiftledger-landing.tls.certresolver=letsencrypt"
       - "traefik.http.routers.shiftledger-landing.priority=1"
+      - "traefik.http.routers.shiftledger-landing.service=shiftledger-landing"
       - "traefik.http.services.shiftledger-landing.loadbalancer.server.port=3000"
 
 volumes:
