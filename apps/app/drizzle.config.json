@@ -3,6 +3,6 @@
   "out": "./migrations",
   "dialect": "postgresql",
   "dbCredentials": {
-    "url": "postgres://shiftledger:shiftledger@localhost:5433/shiftledger"
+    "url": "postgres://shiftledger:shiftledger@postgres:5432/shiftledger"
   }
 }
