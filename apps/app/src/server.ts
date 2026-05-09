@@ -281,6 +281,7 @@ app.get("/api", (_req, res) => {
       adminChangelog: "POST /api/admin/changelog",
       changelog: "GET /changelog (public) · GET /api/changelog (JSON)",
       disputeLine: "POST /api/receipts/:lineId/dispute",
+      escalateShift: "POST /api/shifts/:shiftId/escalate",
       receiptDetail: "GET /api/receipts/:lineId",
       digestRun: "POST /api/internal/digest/run",
       evalRun: "POST /api/internal/eval/run",
@@ -1237,6 +1238,54 @@ app.post("/api/receipts/:lineId/dispute", async (req: Request, res: Response) =>
   } catch (err) {
     console.error("[POST /api/receipts/:lineId/dispute] Error:", err);
     res.status(500).json({ error: { code: "internal", message: "Failed to process dispute" } });
+  }
+});
+
+// =============================================================================
+// Phase 3: Escalate Shift — POST /api/shifts/:shiftId/escalate (docs/12 §3.8)
+// =============================================================================
+
+app.post("/api/shifts/:shiftId/escalate", async (req: Request, res: Response) => {
+  try {
+    const shiftId = String(req.params.shiftId);
+    const { reason } = req.body;
+
+    const [shift] = await db
+      .select()
+      .from(schema.shifts)
+      .where(eq(schema.shifts.id, shiftId))
+      .limit(1);
+
+    if (!shift) {
+      res.status(404).json({ error: { code: "shift_not_found", message: "Shift not found" } });
+      return;
+    }
+
+    if (shift.status === "completed" || shift.status === "cancelled") {
+      res.status(400).json({ error: { code: "shift_terminal", message: `Cannot escalate a shift in '${shift.status}' status` } });
+      return;
+    }
+
+    // Mark shift as escalated (set status to 'stuck' or keep running but flag for review)
+    await db
+      .update(schema.shifts)
+      .set({
+        status: "stuck",
+        endedAt: new Date(),
+      })
+      .where(eq(schema.shifts.id, shiftId));
+
+    console.log(`[escalate] shiftId=${shiftId} reason=${reason ?? "(not provided)"} escalatedAt=${new Date().toISOString()}`);
+
+    res.json({
+      shiftId,
+      escalatedAt: new Date().toISOString(),
+      eta: "24h",
+      message: "Shift escalated for human review. Estimated response within 24 hours.",
+    });
+  } catch (err) {
+    console.error("[POST /api/shifts/:shiftId/escalate] Error:", err);
+    res.status(500).json({ error: { code: "internal", message: "Failed to escalate shift" } });
   }
 });
 
