@@ -6,7 +6,7 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 
 # Install pnpm
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy workspace root files
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
