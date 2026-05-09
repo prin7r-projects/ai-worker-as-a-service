@@ -126,8 +126,8 @@ services:
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.average=600"
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.period=1m"
       - "traefik.http.middlewares.shiftledger-webhook-ratelimit.ratelimit.burst=100"
-      # Catch-all: everything else on the domain (priority 1)
-      - "traefik.http.routers.shiftledger-landing.rule=Host(`ai-worker-as-a-service.prin7r.com`)"
+      # Catch-all: everything else on the domain (priority 1) — exclude /app and /api which go to Express
+      - "traefik.http.routers.shiftledger-landing.rule=Host(`ai-worker-as-a-service.prin7r.com`) && !PathPrefix(`/app`) && !PathPrefix(`/api`)"
       - "traefik.http.routers.shiftledger-landing.entrypoints=websecure"
       - "traefik.http.routers.shiftledger-landing.tls=true"
       - "traefik.http.routers.shiftledger-landing.priority=1"
