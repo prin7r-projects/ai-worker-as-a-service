@@ -15,9 +15,11 @@ COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY apps/app/package.json apps/app/tsconfig.json apps/app/drizzle.config.json apps/app/
 COPY apps/app/src apps/app/src
 COPY apps/app/views apps/app/views
-COPY apps/app/public apps/app/public
 COPY apps/app/migrations apps/app/migrations
 COPY data data
+
+# Ensure public directory exists for static assets
+RUN mkdir -p apps/app/public
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile --filter shiftledger-app --ignore-scripts
@@ -25,4 +27,4 @@ RUN pnpm install --frozen-lockfile --filter shiftledger-app --ignore-scripts
 ENV NODE_ENV=production PORT=3001
 WORKDIR /app/apps/app
 EXPOSE 3001
-CMD ["npx", "tsx", "src/server.ts"]
+CMD sh -c "npx drizzle-kit migrate && npx tsx src/db/seed.ts && npx tsx src/server.ts"
