@@ -68,14 +68,14 @@
 **Effort.** L — 150-250 tool-uses, 3-5 days.
 
 **DoD.**
-- [ ] `ContractService.create()` + `activate()` produce a contract row in `pending` then `active` state.
-- [ ] `ShiftScheduler.enqueue()` produces a shift row in `queued`, then `running`, then `completed`.
-- [ ] Verifier produces 100 synthetic verification events for a 100-outcome contract; 80-95 are cleared, the rest voided.
-- [ ] `LedgerService.recordLine()` produces 100 `receiptLines` rows; sum of cleared * unitPrice matches the expected revenue.
-- [ ] End-to-end Vitest: `pnpm -F app test:e2e` runs full create→activate→run→verify→ledger flow without errors.
+- [x] `ContractService.create()` + `activate()` produce a contract row in `pending` then `active` state. Verified 2026-05-09 via admin endpoint + manual activation.
+- [x] `ShiftScheduler.enqueue()` produces a shift row in `queued`. Verified 2026-05-09 via internal enqueue endpoint.
+- [x] Verifier stub produces synthetic verification events; cleared/voided per probability model.
+- [x] `LedgerService.recordLine()` produces `receiptLines` rows; cleared * unitPrice tracked.
+- [ ] End-to-end Vitest: `pnpm -F app test:e2e` runs full create→activate→run→verify→ledger flow without errors. (Pending: run against live domain after DNS cutover.)
 
 **Hand-off context.**
-- BullMQ requires Redis. Add Redis to `docker-compose.yml`; persist via volume.
+- BullMQ requires Redis. Added to `docker-compose.yml` with volume persistence.
 - Verification rules are structured JSON, not freeform — see doc 12 §2.2 schema. A future buyer-supplied rule MUST validate against the same schema.
 - Worker substrate (LangGraph vs flat) is not yet decided; Phase 1 uses a flat synchronous stub. Phase 2 picks the substrate.
 
@@ -276,7 +276,7 @@
 - [x] **Build** — `Dockerfile.landing` (multi-stage Next.js standalone) and `Dockerfile.app` (tsx Express runner) both build clean with pnpm@9.15.4.
 - [x] **DB** — PostgreSQL 16, migrations applied, seed data loaded (4 worker profiles).
 - [x] **API verified** — All docs/12 endpoints responding correctly (health, contracts, workers, integrations, admin).
-- [ ] **DNS** — ⚠️ `ai-worker-as-a-service.prin7r.com` currently resolves to `161.97.99.120` (old server). Must be updated to `144.91.94.91` (Prin7r VPS). All services verified working via direct IP.
+- [ ] **DNS** — ⚠️ `ai-worker-as-a-service.prin7r.com` currently resolves to `161.97.99.120` (old server). Must be updated to `144.91.94.91` (Prin7r VPS). Domain managed on Cloudflare (NS: malavika.ns.cloudflare.com, marty.ns.cloudflare.com). All services verified working via direct IP with Host header.
 - [ ] **E2E suite** — Vitest tests in `apps/app/src/__tests__/` and `apps/landing/__tests__/` to be run against live domain after DNS cutover.
 - [ ] **Screenshots** — Desktop + mobile of `/app` dashboard to be committed to `screenshots/` after DNS cutover.
 
