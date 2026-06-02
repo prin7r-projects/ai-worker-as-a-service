@@ -80,6 +80,25 @@ export async function POST(request: Request) {
     `[SHIFTLEDGER_NOWPAYMENTS_IPN] verified=true order_id=${orderId} status=${paymentStatus} paid=${paid}`,
   );
 
+  const [contract] = await db
+    .select()
+    .from(schema.contracts)
+    .where(eq(schema.contracts.id, orderId))
+    .limit(1);
+
+  if (!contract) {
+    console.log(`[SHIFTLEDGER_NOWPAYMENTS_IPN] unknown_order_id order_id=${orderId}`);
+    return NextResponse.json({
+      ok: true,
+      verified: true,
+      paid,
+      order_id: orderId,
+      status: paymentStatus,
+      activated: false,
+      unknownOrder: true,
+    });
+  }
+
   // Idempotency check: has this (contractId, paymentStatus) already been processed?
   const [existingEvent] = await db
     .select()
@@ -128,14 +147,7 @@ export async function POST(request: Request) {
         })
         .where(eq(schema.contracts.id, orderId));
 
-      // 2. Look up the contract for referralCode
-      const [contract] = await db
-        .select()
-        .from(schema.contracts)
-        .where(eq(schema.contracts.id, orderId))
-        .limit(1);
-
-      // 3. Accrue rev-share if referralCode present
+      // 2. Accrue rev-share if referralCode present
       if (contract?.referralCode) {
         const contractRevenue = contract.budgetCapUsd ?? contract.unitPriceUsd;
         await db.insert(schema.revShareLedger).values({
@@ -151,7 +163,7 @@ export async function POST(request: Request) {
         );
       }
 
-      // 4. Enqueue first shift via the app server (internal API call)
+      // 3. Enqueue first shift via the app server (internal API call)
       const appServerUrl = process.env.APP_SERVER_URL ?? "http://localhost:3001";
       try {
         const shiftResponse = await fetch(`${appServerUrl}/api/internal/shifts/enqueue`, {
@@ -173,7 +185,7 @@ export async function POST(request: Request) {
         );
       }
 
-      // 5. Notion sync (async, best-effort)
+      // 4. Notion sync (async, best-effort)
       const notionToken = process.env.NOTION_TOKEN;
       if (notionToken) {
         try {
@@ -190,7 +202,7 @@ export async function POST(request: Request) {
         }
       }
 
-      // 6. Send onboarding email (async, best-effort)
+      // 5. Send onboarding email (async, best-effort)
       try {
         await fetch(`${appServerUrl}/api/internal/onboarding/email`, {
           method: "POST",

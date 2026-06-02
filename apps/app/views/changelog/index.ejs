@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Changelog — Shiftledger</title>
   <style>
+    /* Shiftledger changelog — DESIGN.md section 4 tokens only.
+       No purple gradients, no amber drift badges, no off-palette slate. */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #1a1a2e;
-      background: #f8f9fa;
+      color: #0E0E0C;            /* ink */
+      background: #FAFAF8;        /* paper */
       line-height: 1.6;
     }
     .changelog-container {
@@ -24,13 +26,10 @@
     .changelog-header h1 {
       font-size: 32px;
       font-weight: 800;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #0E0E0C;             /* ink — was purple gradient text-fill */
     }
     .changelog-header p {
-      color: #64748b;
+      color: #777169;             /* gravel */
       margin-top: 8px;
     }
     .changelog-date-group {
@@ -39,25 +38,25 @@
     .changelog-date-label {
       font-size: 14px;
       font-weight: 700;
-      color: #64748b;
+      color: #777169;             /* gravel */
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 12px;
       padding-bottom: 8px;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 1px solid #E5E5E5; /* chalk */
     }
     .changelog-entry {
       display: flex;
       gap: 16px;
       padding: 16px 20px;
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      background: #FFFFFF;        /* card-white */
+      border: 1px solid #E5E5E5;  /* chalk */
+      border-radius: 0;
       margin-bottom: 10px;
-      transition: box-shadow 0.15s;
+      transition: border-color 0.12s ease-out;
     }
     .changelog-entry:hover {
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-color: #1F4F8A;     /* audit hover per DESIGN.md section 11 */
     }
     .changelog-entry-icon {
       font-size: 24px;
@@ -67,8 +66,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f1f5f9;
-      border-radius: 8px;
+      background: #F5F3F1;        /* paper-2 */
+      border: 1px solid #E5E5E5;
+      border-radius: 0;
     }
     .changelog-entry-body {
       flex: 1;
@@ -76,24 +76,24 @@
     .changelog-entry-title {
       font-size: 16px;
       font-weight: 600;
-      color: #1e293b;
+      color: #0E0E0C;             /* ink */
     }
     .changelog-entry-desc {
       font-size: 14px;
-      color: #64748b;
+      color: #3A3A36;             /* ink-2 */
       margin-top: 4px;
       line-height: 1.5;
     }
     .changelog-entry-time {
       font-size: 11px;
-      color: #94a3b8;
+      color: #A59F97;             /* slate */
       margin-top: 6px;
       font-family: 'SF Mono', monospace;
     }
     .changelog-empty {
       text-align: center;
       padding: 60px 20px;
-      color: #94a3b8;
+      color: #A59F97;             /* slate */
     }
     .changelog-empty-icon {
       font-size: 48px;
@@ -102,11 +102,11 @@
     .changelog-footer {
       text-align: center;
       padding: 40px 0;
-      color: #94a3b8;
+      color: #A59F97;             /* slate */
       font-size: 13px;
     }
     .changelog-footer a {
-      color: #667eea;
+      color: #1F4F8A;             /* audit */
       text-decoration: none;
     }
     .changelog-footer a:hover {
@@ -115,18 +115,20 @@
     .badge-event {
       display: inline-block;
       padding: 1px 8px;
-      border-radius: 4px;
+      border-radius: 0;
       font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-left: 8px;
       vertical-align: middle;
+      border: 1px solid;
     }
-    .badge-profile_added { background: #dcfce7; color: #166534; }
-    .badge-drift_event { background: #fef3c7; color: #92400e; }
-    .badge-payout { background: #dbeafe; color: #1e40af; }
-    .badge-system { background: #f1f5f9; color: #475569; }
+    /* Event badges — palette-aligned, no off-palette green/amber/blue/slate. */
+    .badge-profile_added { background: #FFFFFF; color: #2E6F40; border-color: #2E6F40; } /* payday */
+    .badge-drift_event   { background: #FFFFFF; color: #1F4F8A; border-color: #1F4F8A; } /* audit (was amber/yellow) */
+    .badge-payout        { background: #FFFFFF; color: #2E6F40; border-color: #2E6F40; } /* payday */
+    .badge-system        { background: #F5F3F1; color: #3A3A36; border-color: #E5E5E5; } /* paper-2 + ink-2 + chalk */
   </style>
 </head>
 <body>

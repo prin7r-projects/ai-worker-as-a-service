@@ -339,9 +339,12 @@ body {
 }
 
 .badge-degraded {
-  background: #FFF8E5;
-  color: #8B6914;
-  border: 1px solid #F5D878;
+  /* PRI-3524: drift/watch-state badge — was amber (#FFF8E5/#8B6914/#F5D878).
+     Replaced with audit-blue review-needed state to keep the locked
+     palette (paper/ink/audit/payday/flag) and the no-amber rule. */
+  background: #FFFFFF;
+  color: var(--audit);
+  border: 1px solid var(--audit);
 }
 
 /* Status dot */
@@ -354,7 +357,9 @@ body {
 }
 .status-dot-green { background: var(--payday); }
 .status-dot-red { background: var(--flag); }
-.status-dot-yellow { background: #D4A017; }
+/* PRI-3524: status-dot-yellow was #D4A017 (amber). Replaced with the
+   audit-blue review-needed state to keep the no-amber rule. */
+.status-dot-yellow { background: var(--audit); }
 .status-dot-gray { background: var(--slate); }
 
 /* Form elements */
@@ -725,9 +730,11 @@ input[type="range"].range-slider::-moz-range-thumb {
   margin-bottom: 1rem;
 }
 .drift-banner-yellow {
-  background: #FFF8E5;
-  color: #8B6914;
-  border: 1px solid #F5D878;
+  /* PRI-3524: amber/yellow drift banner replaced with audit-blue
+     review-needed state. Keeps the locked palette + no-amber rule. */
+  background: #FFFFFF;
+  color: var(--audit);
+  border: 1px solid var(--audit);
 }
 .drift-banner-red {
   background: #FDF0ED;

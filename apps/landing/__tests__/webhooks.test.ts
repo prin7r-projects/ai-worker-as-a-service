@@ -17,14 +17,20 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import crypto from "node:crypto";
 import http from "node:http";
+import postgres from "postgres";
 
 // ---------------------------------------------------------------------------
 // Test helpers
 // ---------------------------------------------------------------------------
 
 const TEST_SECRET = "test-ipn-secret-for-webhook-simulation";
+const TEST_CONTRACT_ID = "shiftledger_trial_99999999_abc123";
+const TEST_CUSTOMER_ID = "00000000-0000-4000-8000-000000000101";
+const TEST_WORKER_PROFILE_ID = "webhook-test-worker";
+const FORGED_ORDER_ID = "forged_order_not_in_our_system";
 const PORT = 3101;
 const BASE = `http://localhost:${PORT}`;
+let fixtureSql: ReturnType<typeof postgres>;
 
 /**
  * Construct a valid x-nowpayments-sig for a given JSON payload.
@@ -51,6 +57,59 @@ function sortObject(value: unknown): unknown {
 /**
  * Make a POST to the webhook route and return status + body + headers.
  */
+async function resetWebhookFixture(): Promise<void> {
+  await fixtureSql`DELETE FROM payment_events WHERE contract_id = ${TEST_CONTRACT_ID} OR contract_id = ${FORGED_ORDER_ID}`;
+  await fixtureSql`DELETE FROM contracts WHERE id = ${TEST_CONTRACT_ID}`;
+  await fixtureSql`DELETE FROM customers WHERE id = ${TEST_CUSTOMER_ID} OR email = 'webhook-test@shiftledger.local'`;
+
+  await fixtureSql`
+    INSERT INTO customers (id, email, org_name)
+    VALUES (${TEST_CUSTOMER_ID}, 'webhook-test@shiftledger.local', 'Webhook Test Org')
+  `;
+
+  await fixtureSql`
+    INSERT INTO worker_profiles (id, display_name, category, unit_price_usd, verification_rule)
+    VALUES (${TEST_WORKER_PROFILE_ID}, 'Webhook Test Worker', 'ops', '2.50', ${JSON.stringify({ type: "webhook-test" })}::jsonb)
+    ON CONFLICT (id) DO UPDATE SET
+      display_name = EXCLUDED.display_name,
+      category = EXCLUDED.category,
+      unit_price_usd = EXCLUDED.unit_price_usd,
+      verification_rule = EXCLUDED.verification_rule
+  `;
+
+  await fixtureSql`
+    INSERT INTO contracts (
+      id,
+      customer_id,
+      worker_profile_id,
+      tier,
+      status,
+      outcome_target,
+      unit_price_usd,
+      budget_cap_usd,
+      term_months,
+      auto_renew
+    ) VALUES (
+      ${TEST_CONTRACT_ID},
+      ${TEST_CUSTOMER_ID},
+      ${TEST_WORKER_PROFILE_ID},
+      'trial',
+      'pending',
+      25,
+      '2.50',
+      '199.00',
+      1,
+      false
+    )
+  `;
+}
+
+async function cleanupWebhookFixture(): Promise<void> {
+  await fixtureSql`DELETE FROM payment_events WHERE contract_id = ${TEST_CONTRACT_ID} OR contract_id = ${FORGED_ORDER_ID}`;
+  await fixtureSql`DELETE FROM contracts WHERE id = ${TEST_CONTRACT_ID}`;
+  await fixtureSql`DELETE FROM customers WHERE id = ${TEST_CUSTOMER_ID} OR email = 'webhook-test@shiftledger.local'`;
+}
+
 async function postWebhook(
   body: Record<string, unknown>,
   signature: string | null,
@@ -110,6 +169,9 @@ beforeAll(async () => {
   process.env.NOWPAYMENTS_IPN_SECRET = TEST_SECRET;
   process.env.NOWPAYMENTS_API_KEY = "test-api-key";
   process.env.DATABASE_URL = "postgres://shiftledger:shiftledger@localhost:5432/shiftledger";
+  fixtureSql = postgres(process.env.DATABASE_URL, { max: 1 });
+
+  await resetWebhookFixture();
 
   // Start a minimal HTTP server that proxies to the route handler
   const { POST } = await import("../app/api/webhooks/nowpayments/route");
@@ -151,8 +213,16 @@ beforeAll(async () => {
   });
 });
 
-afterAll(() => {
-  server?.close();
+afterAll(async () => {
+  await new Promise<void>((resolve) => {
+    if (!server) {
+      resolve();
+      return;
+    }
+    server.close(() => resolve());
+  });
+  await cleanupWebhookFixture();
+  await fixtureSql?.end({ timeout: 1 });
 });
 
 // ---------------------------------------------------------------------------
@@ -163,7 +233,7 @@ describe("POST /api/webhooks/nowpayments — Forgery & Signature Tests", () => {
   const validPayload: Record<string, unknown> = {
     payment_id: 123456,
     payment_status: "finished",
-    order_id: "shiftledger_trial_99999999_abc123",
+    order_id: TEST_CONTRACT_ID,
     invoice_id: "inv-999",
     price_amount: 199,
     price_currency: "usd",
@@ -203,7 +273,7 @@ describe("POST /api/webhooks/nowpayments — Forgery & Signature Tests", () => {
   it("returns 401 when order_id is forged (not created by us)", async () => {
     const forgedPayload = {
       ...validPayload,
-      order_id: "forged_order_not_in_our_system",
+      order_id: FORGED_ORDER_ID,
       payment_status: "finished",
     };
     const sig = sign(forgedPayload, TEST_SECRET);
@@ -216,11 +286,12 @@ describe("POST /api/webhooks/nowpayments — Forgery & Signature Tests", () => {
     expect(b).toHaveProperty("verified", true);
     // Activation should be false since the contract doesn't exist
     expect(b).toHaveProperty("activated", false);
+    expect(b).toHaveProperty("unknownOrder", true);
   });
 
   it("returns 400 when body is not valid JSON", async () => {
     const raw = "this is not json";
-    const sig = crypto.createHmac("sha512", TEST_SECRET.trim).update(raw).digest("hex");
+    const sig = crypto.createHmac("sha512", TEST_SECRET.trim()).update(raw).digest("hex");
 
     const { status, body } = await new Promise<{ status: number; body: unknown }>(
       (resolve, reject) => {
